@@ -1,93 +1,490 @@
 import Link from "next/link";
 
-const modules = [
+function BlogIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+      <path d="M7 4.75h7.5L19 9.25V19a1.25 1.25 0 0 1-1.25 1.25h-10.5A1.25 1.25 0 0 1 6 19V6A1.25 1.25 0 0 1 7.25 4.75Z" />
+      <path d="M14 4.75V9h4.25" />
+      <path d="M9 12h6" />
+      <path d="M9 15.5h6" />
+    </svg>
+  );
+}
+
+function ReadingIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+      <path d="M4.75 6.5A2.75 2.75 0 0 1 7.5 3.75H19.25V18.5H7.5A2.75 2.75 0 0 0 4.75 21.25Z" />
+      <path d="M7.5 3.75A2.75 2.75 0 0 0 4.75 6.5v14.75A2.75 2.75 0 0 1 7.5 18.5h11.75" />
+      <path d="M9 7.75h6.5" />
+      <path d="M9 11h6.5" />
+    </svg>
+  );
+}
+
+function WorkIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+      <path d="M4.75 8.5A1.75 1.75 0 0 1 6.5 6.75h11A1.75 1.75 0 0 1 19.25 8.5v8.75A1.75 1.75 0 0 1 17.5 19h-11a1.75 1.75 0 0 1-1.75-1.75Z" />
+      <path d="M9 6.75v-1A1.75 1.75 0 0 1 10.75 4h2.5A1.75 1.75 0 0 1 15 5.75v1" />
+      <path d="M4.75 11.5h14.5" />
+      <path d="M11 14.25h2" />
+    </svg>
+  );
+}
+
+function GameIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+      <path d="M8.25 8.75h7.5a3.25 3.25 0 0 1 3.2 2.71l.53 3.18a3.25 3.25 0 0 1-5.08 3.18L12 16l-2.4 1.82a3.25 3.25 0 0 1-5.08-3.18l.53-3.18a3.25 3.25 0 0 1 3.2-2.71Z" />
+      <path d="M8.5 11.5v3" />
+      <path d="M7 13h3" />
+      <path d="M15.75 12.25h.01" />
+      <path d="M17.75 14.25h.01" />
+    </svg>
+  );
+}
+
+function CookingIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+      <path d="M4.75 10.75h10.5a2 2 0 0 1 2 2V14a5.25 5.25 0 0 1-5.25 5.25H8A5.25 5.25 0 0 1 2.75 14v-1.25a2 2 0 0 1 2-2Z" />
+      <path d="M17.25 11.75h1a3 3 0 1 1 0 6h-1" />
+      <path d="M6.5 8.25V6.5" />
+      <path d="M10 8.25v-2.5" />
+      <path d="M13.5 8.25V7" />
+    </svg>
+  );
+}
+
+function TravelIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+      <path d="M10.5 13.5 4.75 15.25l-1-2 5.25-2.75L10.5 4.75h2.25l-.5 5 5.25-1.75a1.5 1.5 0 0 1 1.9.94l.35 1a1.5 1.5 0 0 1-.94 1.9l-6.1 2.06-.96 5.35H9.5l1-4.75Z" />
+    </svg>
+  );
+}
+
+const featuredModules = [
   {
     title: "个人博客",
+    eyebrow: "BLOG",
     href: "/blog",
-    eyebrow: "Blog",
-    description:
-      "进入 Maurice 的技术博客，阅读关于 Next.js、Prisma、自动化工作流与真实项目构建的文章。",
-    accent: "from-sky-500 via-cyan-400 to-blue-500",
-    badge: "已上线",
-  },
-  {
-    title: "游戏",
-    href: "/game",
-    eyebrow: "Game",
-    description:
-      "预留给互动玩法、个人作品展示和一些更轻松的实验内容，后续可以继续扩展成独立模块。",
-    accent: "from-amber-400 via-orange-400 to-rose-500",
-    badge: "建设中",
+    description: "进入 Maurice 的技术博客，阅读关于 Next.js、Prisma、自动化流程与真实项目构建的实践内容。",
+    tags: ["长期更新", "核心入口"],
+    cta: "进入博客",
+    icon: BlogIcon,
+    tone: {
+      border: "border-sky-200/80",
+      panel: "bg-sky-50/70",
+      icon: "bg-sky-100 text-sky-700 border-sky-200/80",
+      glow: "from-sky-300/30 via-cyan-200/20 to-transparent",
+    },
   },
   {
     title: "名著阅读",
+    eyebrow: "READING",
     href: "/reading",
-    eyebrow: "Reading",
-    description:
-      "沉淀经典文学阅读记录、摘录与思考，把阅读体验整理成一个可以持续更新的长期栏目。",
-    accent: "from-emerald-400 via-teal-400 to-cyan-500",
-    badge: "建设中",
+    description: "沉淀经典文学阅读记录、摘录与思考，把阅读体验整理成可以持续更新的长期栏目。",
+    tags: ["长期专题", "持续沉淀"],
+    cta: "进入阅读",
+    icon: ReadingIcon,
+    tone: {
+      border: "border-emerald-200/80",
+      panel: "bg-emerald-50/70",
+      icon: "bg-emerald-100 text-emerald-700 border-emerald-200/80",
+      glow: "from-emerald-300/30 via-teal-200/20 to-transparent",
+    },
   },
   {
-    title: "爱做菜",
-    href: "/cooking",
-    eyebrow: "Cooking",
-    description:
-      "用于整理家常菜、烘焙、饮品和个人拿手菜谱，后续可以继续扩展成完整的菜谱管理模块。",
-    accent: "from-rose-400 via-orange-400 to-amber-400",
-    badge: "新模块",
+    title: "爱工作",
+    eyebrow: "WORK",
+    href: "/work",
+    description: "沉淀工作方法、项目复盘、效率系统与职业思考，把经验整理成可复用的个人工作手册。",
+    tags: ["方法沉淀", "长期更新"],
+    cta: "进入工作",
+    icon: WorkIcon,
+    tone: {
+      border: "border-slate-200/80",
+      panel: "bg-slate-50/70",
+      icon: "bg-slate-100 text-slate-700 border-slate-200/80",
+      glow: "from-slate-300/30 via-zinc-200/20 to-transparent",
+    },
   },
 ] as const;
 
+const exploreModules = [
+  {
+    title: "游戏",
+    eyebrow: "GAME",
+    href: "/game",
+    description: "预留给互动玩法、轻量实验和个人作品展示，用更轻松的方式扩展首页的趣味体验。",
+    tags: ["灵感实验", "互动内容"],
+    cta: "进入游戏",
+    icon: GameIcon,
+    tone: {
+      border: "border-amber-200/80",
+      panel: "bg-amber-50/70",
+      icon: "bg-amber-100 text-amber-700 border-amber-200/80",
+    },
+  },
+  {
+    title: "爱做菜",
+    eyebrow: "COOKING",
+    href: "/cooking",
+    description: "整理家常菜、烘焙、饮品与个人拿手菜谱，把做饭这件事也记录成长期可回看的生活模块。",
+    tags: ["生活记录", "长期收藏"],
+    cta: "进入做菜",
+    icon: CookingIcon,
+    tone: {
+      border: "border-rose-200/80",
+      panel: "bg-rose-50/70",
+      icon: "bg-rose-100 text-rose-700 border-rose-200/80",
+    },
+  },
+  {
+    title: "爱旅游",
+    eyebrow: "TRAVEL",
+    href: "/travel",
+    description: "记录旅行见闻、城市漫游与路线规划，整理沿途照片与每次出发的内容专题。",
+    tags: ["生活专题", "持续更新"],
+    cta: "进入旅行",
+    icon: TravelIcon,
+    tone: {
+      border: "border-cyan-200/80",
+      panel: "bg-cyan-50/70",
+      icon: "bg-cyan-100 text-cyan-700 border-cyan-200/80",
+    },
+  },
+] as const;
+
+const overviewStats = [
+  { value: "6", label: "模块入口" },
+  { value: "3", label: "长期主线" },
+  { value: "3", label: "生活兴趣" },
+] as const;
+
+const moduleLabels = ["个人博客", "名著阅读", "爱工作", "游戏", "爱做菜", "爱旅游"] as const;
+
+type Module = (typeof featuredModules)[number] | (typeof exploreModules)[number];
+
+function HeroIllustration() {
+  return (
+    <div className="relative overflow-hidden rounded-[32px] border border-zinc-200/80 bg-transparent p-5 shadow-[0_24px_60px_rgba(15,23,42,0.08)] sm:p-6">
+      <svg
+        viewBox="0 0 560 420"
+        className="relative h-[320px] w-full text-zinc-900"
+        role="img"
+        aria-label="展示月亮从新月到满月再回到新月的月相变化动画"
+      >
+        <defs>
+          <radialGradient id="phaseGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#f8fafc" stopOpacity="0.85" />
+            <stop offset="0.55" stopColor="#dbeafe" stopOpacity="0.28" />
+            <stop offset="1" stopColor="#dbeafe" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="moonSurface" cx="36%" cy="32%" r="72%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="0.52" stopColor="#f8fafc" />
+            <stop offset="1" stopColor="#d8e1ec" />
+          </radialGradient>
+          <linearGradient id="orbitStroke" x1="0%" x2="100%" y1="0%" y2="100%">
+            <stop offset="0%" stopColor="#cbd5e1" stopOpacity="0.28" />
+            <stop offset="0.5" stopColor="#c4b5fd" stopOpacity="0.38" />
+            <stop offset="1" stopColor="#bae6fd" stopOpacity="0.18" />
+          </linearGradient>
+          <radialGradient id="umbra" cx="50%" cy="50%" r="62%">
+            <stop offset="0%" stopColor="#020617" stopOpacity="0.92" />
+            <stop offset="0.78" stopColor="#0f172a" stopOpacity="0.74" />
+            <stop offset="1" stopColor="#1e293b" stopOpacity="0.18" />
+          </radialGradient>
+          <filter id="softBlur" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="6" />
+          </filter>
+          <filter id="moonShadow" x="-40%" y="-40%" width="180%" height="180%">
+            <feDropShadow dx="0" dy="18" stdDeviation="22" floodColor="#94a3b8" floodOpacity="0.16" />
+          </filter>
+          <clipPath id="moonClip">
+            <circle cx="280" cy="210" r="88" />
+          </clipPath>
+        </defs>
+
+        <g opacity="0.8">
+          <circle cx="280" cy="210" r="150" fill="url(#phaseGlow)" />
+          <circle cx="280" cy="210" r="126" fill="none" stroke="url(#orbitStroke)" strokeWidth="1.25" />
+          <circle cx="280" cy="210" r="108" fill="none" stroke="#cbd5e1" strokeOpacity="0.55" strokeWidth="1" strokeDasharray="2 10">
+            <animateTransform
+              attributeName="transform"
+              type="rotate"
+              from="0 280 210"
+              to="360 280 210"
+              dur="34s"
+              repeatCount="indefinite"
+            />
+          </circle>
+        </g>
+
+        <g fill="#cbd5e1">
+          <circle cx="132" cy="118" r="2.1" opacity="0.82">
+            <animate attributeName="opacity" values="0.2;0.85;0.2" dur="4.8s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="178" cy="76" r="1.7" opacity="0.64">
+            <animate attributeName="opacity" values="0.2;0.7;0.2" dur="5.6s" begin="1s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="426" cy="94" r="2" opacity="0.78">
+            <animate attributeName="opacity" values="0.25;0.9;0.25" dur="5.1s" begin="0.6s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="450" cy="304" r="1.9" opacity="0.72">
+            <animate attributeName="opacity" values="0.15;0.72;0.15" dur="6.2s" begin="1.6s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="114" cy="296" r="1.6" opacity="0.58">
+            <animate attributeName="opacity" values="0.15;0.76;0.15" dur="5.4s" begin="0.9s" repeatCount="indefinite" />
+          </circle>
+        </g>
+
+        <path
+          d="M174 338C208 324 240 318 280 318C320 318 352 324 386 338"
+          fill="none"
+          stroke="#cbd5e1"
+          strokeOpacity="0.55"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+        <path
+          d="M206 352C230 346 252 344 280 344C308 344 330 346 354 352"
+          fill="none"
+          stroke="#e2e8f0"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+        />
+
+        <g filter="url(#moonShadow)">
+          <circle cx="280" cy="210" r="88" fill="url(#moonSurface)" />
+          <circle cx="280" cy="210" r="88" fill="none" stroke="#f8fafc" strokeOpacity="0.85" strokeWidth="1.6" />
+        </g>
+
+        <g clipPath="url(#moonClip)">
+          <g opacity="0.42">
+            <circle cx="246" cy="180" r="8" fill="#d7dee9" />
+            <circle cx="316" cy="238" r="12" fill="#d3dbe6" />
+            <circle cx="322" cy="166" r="5" fill="#d7dee9" />
+            <circle cx="254" cy="242" r="6" fill="#dfe5ee" />
+          </g>
+
+          <g filter="url(#softBlur)">
+            <ellipse cx="384" cy="210" rx="116" ry="102" fill="url(#umbra)">
+              <animate
+                attributeName="cx"
+                values="418;374;332;280;228;186;142;186;228;280;332;374;418"
+                dur="24s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="rx"
+                values="122;110;86;18;86;110;122;110;86;18;86;110;122"
+                dur="24s"
+                repeatCount="indefinite"
+              />
+            </ellipse>
+          </g>
+
+          <ellipse cx="278" cy="210" rx="92" ry="90" fill="#ffffff" fillOpacity="0.08">
+            <animate
+              attributeName="opacity"
+              values="0.02;0.08;0.02"
+              dur="9s"
+              repeatCount="indefinite"
+            />
+          </ellipse>
+        </g>
+
+        <g opacity="0.55">
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            from="0 280 210"
+            to="360 280 210"
+            dur="48s"
+            repeatCount="indefinite"
+          />
+          <path d="M280 72v-14" stroke="#cbd5e1" strokeWidth="1.6" strokeLinecap="round" />
+          <path d="M280 362v-14" stroke="#cbd5e1" strokeWidth="1.6" strokeLinecap="round" />
+          <path d="M142 210h-14" stroke="#cbd5e1" strokeWidth="1.6" strokeLinecap="round" />
+          <path d="M432 210h-14" stroke="#cbd5e1" strokeWidth="1.6" strokeLinecap="round" />
+        </g>
+      </svg>
+    </div>
+  );
+}
+
+function SectionHeading({
+  eyebrow,
+  title,
+  description,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="max-w-3xl">
+      <p className="text-xs font-semibold uppercase tracking-[0.34em] text-zinc-500">{eyebrow}</p>
+      <h2 className="mt-3 text-2xl font-semibold tracking-tight text-zinc-950 sm:text-3xl">{title}</h2>
+      <p className="mt-3 max-w-2xl text-sm leading-7 text-zinc-600 sm:text-base">{description}</p>
+    </div>
+  );
+}
+
+function ModuleCard({ module, featured = false }: { module: Module; featured?: boolean }) {
+  return (
+    <Link
+      href={module.href}
+      className={`group relative overflow-hidden rounded-[30px] border bg-white/92 p-6 transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_rgba(15,23,42,0.12)] sm:p-7 ${
+        featured ? "shadow-[0_22px_50px_rgba(15,23,42,0.08)]" : "shadow-[0_18px_40px_rgba(15,23,42,0.06)]"
+      } ${module.tone.border}`}
+    >
+      {"glow" in module.tone ? (
+        <div
+          className={`pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br blur-3xl ${module.tone.glow}`}
+          aria-hidden="true"
+        />
+      ) : null}
+
+      <div className="relative flex h-full flex-col">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-zinc-500">{module.eyebrow}</p>
+            <h3 className={`mt-4 font-semibold tracking-tight text-zinc-950 ${featured ? "text-3xl" : "text-2xl"}`}>
+              {module.title}
+            </h3>
+          </div>
+          <span
+            className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border ${module.tone.icon}`}
+            aria-hidden="true"
+          >
+            <module.icon />
+          </span>
+        </div>
+
+        <p className={`mt-4 text-zinc-600 ${featured ? "max-w-xl text-base leading-8" : "text-[15px] leading-7"}`}>
+          {module.description}
+        </p>
+
+        <div className="mt-6 flex flex-wrap gap-2">
+          {module.tags.map((tag) => (
+            <span key={tag} className={`rounded-full border px-3 py-1.5 text-sm text-zinc-600 ${module.tone.panel} ${module.tone.border}`}>
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-8 flex justify-end border-t border-zinc-100 pt-5">
+          <span className="inline-flex items-center rounded-full border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 transition group-hover:border-zinc-300 group-hover:bg-zinc-50">
+            {module.cta}
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(186,230,253,0.45),_transparent_36%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_42%,_#ffffff_100%)]">
-      <section className="mx-auto flex min-h-screen max-w-6xl flex-col px-5 py-8 sm:px-6 sm:py-10">
-        <div className="rounded-[32px] border border-white/70 bg-white/80 p-6 shadow-[0_30px_80px_rgba(15,23,42,0.08)] backdrop-blur sm:p-8 lg:p-10">
-          <div className="max-w-3xl">
-            <p className="text-sm font-medium uppercase tracking-[0.34em] text-sky-700">Module Gateway</p>
-            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl lg:text-6xl">
-              选择你想进入的内容模块
-            </h1>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-zinc-600 sm:text-lg">
-              这里是站点新的首页入口。你可以从这里进入个人博客、游戏实验区、名著阅读或爱做菜模块，后续也方便继续扩展更多内容板块。
-            </p>
+    <main className="min-h-screen overflow-hidden bg-[linear-gradient(180deg,#f8fafc_0%,#eef2ff_26%,#ffffff_100%)]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_top_left,rgba(125,211,252,0.20),transparent_34%),radial-gradient(circle_at_top_right,rgba(191,219,254,0.16),transparent_28%),radial-gradient(circle_at_center,rgba(196,181,253,0.10),transparent_38%)]" />
+
+      <section className="relative mx-auto max-w-7xl px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+        <div className="rounded-[36px] border border-white/70 bg-white/76 p-6 shadow-[0_34px_100px_rgba(15,23,42,0.08)] backdrop-blur sm:p-8 lg:p-10">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.02fr)_minmax(360px,0.98fr)] lg:items-center">
+            <div className="max-w-3xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.34em] text-sky-700">MODULE GATEWAY</p>
+              <h1 className="mt-5 whitespace-nowrap text-[2rem] font-semibold italic tracking-[-0.04em] text-zinc-950 sm:text-[2.75rem] lg:text-[3.35rem]">
+                Maurice Content Portal
+              </h1>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-600 sm:text-lg">
+                这里是 Maurice 的内容首页。你可以从这里进入个人博客、名著阅读、工作方法、游戏实验、做菜记录和旅行内容，让不同主题拥有清晰归属，也让每一次浏览都有独立节奏。
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center rounded-full bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800"
+                >
+                  先看个人博客
+                </Link>
+                <a
+                  href="#all-modules"
+                  className="inline-flex items-center rounded-full border border-zinc-200 bg-white px-5 py-3 text-sm font-medium text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-50"
+                >
+                  浏览全部模块
+                </a>
+              </div>
+
+              <div className="mt-12">
+                <div className="flex items-end justify-between gap-6 border-b border-zinc-200/80 pb-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.34em] text-zinc-500">OVERVIEW</p>
+                    <h2 className="mt-2 text-xl font-semibold tracking-tight text-zinc-950 sm:text-2xl">首页概览</h2>
+                  </div>
+                  <p className="max-w-md text-right text-sm leading-6 text-zinc-500">
+                    六个模块被拆分为三条核心内容线与三类生活兴趣线。
+                  </p>
+                </div>
+
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  {overviewStats.map((item) => (
+                    <div
+                      key={item.label}
+                      className="rounded-[24px] border border-zinc-200/80 bg-white/85 px-5 py-5 shadow-[0_14px_36px_rgba(15,23,42,0.05)]"
+                    >
+                      <p className="text-3xl font-semibold tracking-tight text-zinc-950">{item.value}</p>
+                      <p className="mt-1 text-sm text-zinc-500">{item.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                {moduleLabels.map((label) => (
+                  <span
+                    key={label}
+                    className="rounded-full border border-zinc-200/80 bg-zinc-50/90 px-3 py-1.5 text-sm text-zinc-600"
+                  >
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <HeroIllustration />
           </div>
 
-          <div className="mt-8 grid gap-4 lg:mt-10 md:grid-cols-2 xl:grid-cols-4">
-            {modules.map((module) => (
-              <Link
-                key={module.href}
-                href={module.href}
-                className="group relative overflow-hidden rounded-[28px] border border-zinc-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-zinc-300 hover:shadow-[0_24px_60px_rgba(15,23,42,0.12)]"
-              >
-                <div
-                  className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${module.accent}`}
-                  aria-hidden="true"
-                />
+          <div id="all-modules" className="mt-20">
+            <SectionHeading
+              eyebrow="FEATURED MODULES"
+              title="核心内容模块"
+              description="围绕技术、阅读与工作展开的长期内容主线。"
+            />
 
-                <div className="flex items-center justify-between gap-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-zinc-500">
-                    {module.eyebrow}
-                  </p>
-                  <span className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-medium text-zinc-600">
-                    {module.badge}
-                  </span>
-                </div>
+            <div className="mt-8 grid gap-5 lg:grid-cols-3">
+              {featuredModules.map((module) => (
+                <ModuleCard key={module.href} module={module} featured />
+              ))}
+            </div>
+          </div>
 
-                <h2 className="mt-6 text-3xl font-semibold tracking-tight text-zinc-950 transition-colors group-hover:text-sky-800">
-                  {module.title}
-                </h2>
-                <p className="mt-4 text-[15px] leading-7 text-zinc-600">{module.description}</p>
+          <div className="mt-16">
+            <SectionHeading
+              eyebrow="MORE MODULES"
+              title="兴趣与生活模块"
+              description="保留趣味感，同时延展持续更新的生活内容。"
+            />
 
-                <div className="mt-8 flex items-center justify-between border-t border-zinc-100 pt-5">
-                  <span className="text-sm font-medium text-zinc-500">点击进入模块</span>
-                  <span className="inline-flex items-center rounded-full border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 transition group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-sky-700">
-                    进入
-                  </span>
-                </div>
-              </Link>
-            ))}
+            <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {exploreModules.map((module) => (
+                <ModuleCard key={module.href} module={module} />
+              ))}
+            </div>
           </div>
         </div>
       </section>
