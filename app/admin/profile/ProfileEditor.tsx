@@ -38,10 +38,6 @@ export default function ProfileEditor() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  useEffect(() => {
-    void fetchProfile();
-  }, []);
-
   async function fetchProfile() {
     setLoading(true);
     setError(null);
@@ -73,6 +69,12 @@ export default function ProfileEditor() {
         : [],
     });
   }
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      void fetchProfile();
+    });
+  }, []);
 
   function updateSkill(index: number, label: string) {
     setForm((current) => ({

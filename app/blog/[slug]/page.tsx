@@ -22,7 +22,7 @@ export default async function BlogPostPage(props: PageProps<"/blog/[slug]">) {
     <main className="min-h-screen bg-[linear-gradient(180deg,_#f8fafc_0%,_#ffffff_30%,_#f8fafc_100%)]">
       <div className="mx-auto flex max-w-5xl flex-col gap-8 px-6 py-10 sm:py-14">
         <Link href="/" className="text-sm font-medium text-sky-700 hover:underline">
-          ← 返回文章列表
+          ← 返回模块首页
         </Link>
 
         <article className="overflow-hidden rounded-[32px] border border-zinc-200/80 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
@@ -67,16 +67,16 @@ export default async function BlogPostPage(props: PageProps<"/blog/[slug]">) {
 
             <div className="mx-auto mt-12 flex max-w-3xl justify-between gap-4 border-t border-zinc-200 pt-6">
               <Link
-                href="/"
+                href="/blog"
                 className="inline-flex items-center rounded-2xl border border-zinc-200 bg-white px-5 py-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50"
               >
-                返回首页
+                返回博客首页
               </Link>
               <Link
                 href="/"
                 className="inline-flex items-center rounded-2xl bg-sky-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-sky-700"
               >
-                返回文章列表
+                返回模块首页
               </Link>
             </div>
           </div>

@@ -18,10 +18,6 @@ export default function AdminView() {
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    void fetchPosts();
-  }, []);
-
   async function fetchPosts() {
     setLoading(true);
 
@@ -37,6 +33,12 @@ export default function AdminView() {
 
     setPosts(data);
   }
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      void fetchPosts();
+    });
+  }, []);
 
   function fillForm(post: PostItem) {
     setSelectedPost(post);
