@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model Post {
+  id             Int       @id @default(autoincrement())
+  title          String
+  slug           String    @unique
+  excerpt        String?
+  content        String
+  status         PostStatus @default(DRAFT)
+  seoTitle       String?
+  seoDescription String?
+  coverImage     String?
+  category       Category? @relation(fields: [categoryId], references: [id])
+  categoryId     Int?
+  tags           PostTag[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([status])
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  slug  String @unique
+  posts Post[]
+}
+
+model Tag {
+  id    Int       @id @default(autoincrement())
+  name  String    @unique
+  slug  String    @unique
+  posts PostTag[]
+}
+
+model PostTag {
+  post   Post @relation(fields: [postId], references: [id])
+  postId Int
+  tag    Tag  @relation(fields: [tagId], references: [id])
+  tagId  Int
+
+  @@id([postId, tagId])
+}
+
+model SiteProfile {
+  id        Int            @id @default(autoincrement())
+  name      String
+  title     String
+  heroIntro String         @default("")
+  bio       String
+  avatar    String?
+  ctaText   String
+  ctaLink   String
+  skills    ProfileSkill[]
+  updatedAt DateTime       @updatedAt
+}
+
+model ProfileSkill {
+  id            Int         @id @default(autoincrement())
+  label         String
+  sortOrder     Int         @default(0)
+  siteProfile   SiteProfile @relation(fields: [siteProfileId], references: [id], onDelete: Cascade)
+  siteProfileId Int
+
+  @@index([siteProfileId, sortOrder])
+}
