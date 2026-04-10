@@ -158,14 +158,6 @@ const exploreModules = [
   },
 ] as const;
 
-const overviewStats = [
-  { value: "6", label: "模块入口" },
-  { value: "3", label: "长期主线" },
-  { value: "3", label: "生活兴趣" },
-] as const;
-
-const moduleLabels = ["个人博客", "名著阅读", "爱工作", "游戏", "爱做菜", "爱旅游"] as const;
-
 type Module = (typeof featuredModules)[number] | (typeof exploreModules)[number];
 
 function HeroIllustration() {
@@ -448,41 +440,6 @@ export default function HomePage() {
                 >
                   浏览全部模块
                 </a>
-              </div>
-
-              <div className="mt-12">
-                <div className="flex items-end justify-between gap-6 border-b border-[rgba(255,255,255,0.08)] pb-4">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.34em] text-[var(--gold)]">OVERVIEW</p>
-                    <h2 className="mt-2 text-xl font-semibold tracking-tight text-[var(--foreground)] sm:text-2xl">首页概览</h2>
-                  </div>
-                  <p className="max-w-md text-right text-sm leading-6 text-[var(--muted)]">
-                    六个模块被拆分为三条核心内容线与三类生活兴趣线。
-                  </p>
-                </div>
-
-                <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                  {overviewStats.map((item) => (
-                    <div
-                      key={item.label}
-                      className="rounded-[24px] border border-[rgba(214,179,106,0.16)] bg-[linear-gradient(180deg,_rgba(255,255,255,0.04)_0%,_rgba(255,255,255,0.02)_100%)] px-5 py-5"
-                    >
-                      <p className="text-3xl font-semibold tracking-tight text-[var(--foreground)]">{item.value}</p>
-                      <p className="mt-1 text-sm text-[var(--muted)]">{item.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-5 flex flex-wrap gap-2">
-                {moduleLabels.map((label) => (
-                  <span
-                    key={label}
-                    className="rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3 py-1.5 text-sm text-[var(--muted)]"
-                  >
-                    {label}
-                  </span>
-                ))}
               </div>
             </div>
 

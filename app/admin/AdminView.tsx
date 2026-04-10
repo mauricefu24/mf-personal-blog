@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import AdminQuickNav from "./components/AdminQuickNav";
 import AdminHeader from "./components/AdminHeader";
 import PostEditorWorkspace from "./components/PostEditorWorkspace";
 import PostListPanel from "./components/PostListPanel";
@@ -134,6 +135,8 @@ export default function AdminView() {
 
   return (
     <div className="space-y-8">
+      <AdminQuickNav onCreateNew={resetForm} />
+
       <AdminHeader
         totalPosts={posts.length}
         publishedPosts={publishedPosts}

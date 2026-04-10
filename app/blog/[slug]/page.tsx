@@ -30,9 +30,9 @@ export default async function BlogPostPage(props: PageProps<"/blog/[slug]">) {
           </Link>
           <Link
             href="/"
-            className="inline-flex items-center rounded-full border border-[rgba(214,179,106,0.2)] bg-[rgba(214,179,106,0.08)] px-4 py-2 text-sm font-medium text-[var(--gold)] transition hover:border-[rgba(214,179,106,0.34)]"
+            className="inline-flex items-center rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] px-4 py-2 text-sm font-medium text-[var(--muted)] transition hover:border-[rgba(214,179,106,0.2)] hover:text-[var(--foreground)]"
           >
-            返回模块首页
+            返回首页
           </Link>
         </div>
 
@@ -80,21 +80,6 @@ export default async function BlogPostPage(props: PageProps<"/blog/[slug]">) {
 
           <div className="px-7 py-8 sm:px-10 sm:py-10 lg:px-12 lg:py-12">
             <ArticleContent content={post.content} />
-
-            <div className="mx-auto mt-14 flex max-w-3xl flex-wrap justify-between gap-4 border-t border-[rgba(255,255,255,0.08)] pt-6">
-              <Link
-                href="/blog"
-                className="inline-flex items-center rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] px-5 py-3 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.22)] hover:text-[var(--gold)]"
-              >
-                浏览更多文章
-              </Link>
-              <Link
-                href="/"
-                className="inline-flex items-center rounded-full bg-[var(--gold)] px-5 py-3 text-sm font-medium text-black transition hover:brightness-105"
-              >
-                返回模块首页
-              </Link>
-            </div>
           </div>
         </article>
       </div>

@@ -43,19 +43,29 @@ export default function AdminHeader({
             在一个更清晰的工作台中管理文章内容、发布状态、分类标签与展示设置。左侧快速浏览内容，
             右侧专注编辑当前文章。
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-5 inline-flex items-center rounded-full border border-[rgba(214,179,106,0.16)] bg-[rgba(214,179,106,0.08)] px-4 py-2 text-xs font-medium tracking-[0.22em] text-[var(--gold)] uppercase">
+            {isEditing ? "当前正在编辑文章" : "当前可直接新建文章"}
+          </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:max-w-2xl">
             <button
               type="button"
               onClick={onCreateNew}
               className="inline-flex h-12 items-center justify-center rounded-2xl bg-[var(--gold)] px-6 text-sm font-semibold text-black shadow-[0_16px_40px_rgba(214,179,106,0.22)] transition hover:-translate-y-0.5 hover:brightness-105"
             >
-              + {isEditing ? "新建文章" : "新建文章"}
+              + 新建文章
             </button>
             <Link
               href="/admin/profile"
               className="inline-flex h-12 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-6 text-sm font-semibold text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.22)] hover:text-[var(--gold)]"
             >
               关于我设置
+            </Link>
+            <Link
+              href="/admin"
+              className="inline-flex h-12 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-6 text-sm font-semibold text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.22)] hover:text-[var(--gold)]"
+            >
+              文章管理首页
             </Link>
             <Link
               href="/"

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import AdminQuickNav from "../components/AdminQuickNav";
 
 type SkillItem = {
   id: string | number;
@@ -197,6 +198,8 @@ export default function ProfileEditor() {
 
   return (
     <div className="space-y-8">
+      <AdminQuickNav />
+
       <div className="premium-panel flex flex-col gap-4 rounded-3xl p-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-semibold text-[var(--foreground)]">关于我设置</h1>
@@ -208,6 +211,12 @@ export default function ProfileEditor() {
             className="inline-flex h-12 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.22)] hover:text-[var(--gold)]"
           >
             返回文章管理
+          </Link>
+          <Link
+            href="/admin"
+            className="inline-flex h-12 items-center justify-center rounded-2xl bg-[var(--gold)] px-5 text-sm font-medium text-black transition hover:brightness-105"
+          >
+            新建文章
           </Link>
           <Link
             href="/"

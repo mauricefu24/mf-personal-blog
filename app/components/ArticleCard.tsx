@@ -73,8 +73,7 @@ export default function ArticleCard({ post, variant = "default" }: Props) {
             </div>
 
             <div className="mt-5 flex items-center justify-between gap-4">
-              <p className="text-sm text-[var(--muted)]">Featured Post</p>
-              <span className="inline-flex items-center rounded-full border border-[rgba(214,179,106,0.22)] bg-[rgba(255,255,255,0.02)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition group-hover:border-[rgba(214,179,106,0.36)] group-hover:text-[var(--gold)]">
+<span className="inline-flex items-center rounded-full border border-[rgba(214,179,106,0.22)] bg-[rgba(255,255,255,0.02)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition group-hover:border-[rgba(214,179,106,0.36)] group-hover:text-[var(--gold)]">
                 阅读全文
               </span>
             </div>
