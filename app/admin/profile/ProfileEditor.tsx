@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 type SkillItem = {
@@ -35,8 +36,10 @@ export default function ProfileEditor() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
 
   async function fetchProfile() {
     setLoading(true);
@@ -124,6 +127,30 @@ export default function ProfileEditor() {
         skills: skills.map((skill, skillIndex) => ({ ...skill, sortOrder: skillIndex })),
       };
     });
+  }
+
+  async function handleAvatarUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setUploadingAvatar(true);
+    setError(null);
+
+    const body = new FormData();
+    body.append("file", file);
+
+    const response = await fetch("/api/upload", { method: "POST", body });
+    const data = await response.json();
+
+    setUploadingAvatar(false);
+
+    if (!response.ok) {
+      setError(data?.message || "图片上传失败。");
+      return;
+    }
+
+    setForm((current) => ({ ...current, avatar: data.url as string }));
+    if (avatarInputRef.current) avatarInputRef.current.value = "";
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -248,15 +275,61 @@ export default function ProfileEditor() {
                 />
               </label>
 
-              <label className="block">
-                <span className="text-sm text-[var(--muted)]">头像链接</span>
-                <input
-                  value={form.avatar}
-                  onChange={(event) => setForm({ ...form, avatar: event.target.value })}
-                  className="mt-2 w-full rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[rgba(214,179,106,0.38)] focus:ring-2 focus:ring-[rgba(214,179,106,0.12)]"
-                  placeholder="https://..."
-                />
-              </label>
+              <div>
+                <span className="text-sm text-[var(--muted)]">头像</span>
+                <div className="mt-2 flex items-start gap-4">
+                  <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)]">
+                    {form.avatar ? (
+                      <Image
+                        src={form.avatar}
+                        alt="头像预览"
+                        width={64}
+                        height={64}
+                        className="h-full w-full object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[rgba(245,245,242,0.22)]">
+                          <circle cx="12" cy="8" r="4" />
+                          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex flex-1 flex-col gap-2">
+                    <input
+                      value={form.avatar}
+                      onChange={(event) => setForm({ ...form, avatar: event.target.value })}
+                      className="w-full rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[rgba(214,179,106,0.38)] focus:ring-2 focus:ring-[rgba(214,179,106,0.12)]"
+                      placeholder="https://..."
+                      title="头像链接"
+                    />
+                    <input
+                      ref={avatarInputRef}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      aria-label="上传头像图片"
+                      onChange={(event) => void handleAvatarUpload(event)}
+                    />
+                    <button
+                      type="button"
+                      disabled={uploadingAvatar}
+                      onClick={() => avatarInputRef.current?.click()}
+                      className="inline-flex h-9 w-fit items-center gap-2 rounded-2xl border border-[rgba(255,255,255,0.08)] px-4 text-sm text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)] disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                      </svg>
+                      {uploadingAvatar ? "上传中..." : "上传图片"}
+                    </button>
+                  </div>
+                </div>
+              </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block">

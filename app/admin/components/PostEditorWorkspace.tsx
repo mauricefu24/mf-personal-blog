@@ -55,8 +55,30 @@ function Field({
 const inputClassName =
   "w-full rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(0,0,0,0.18)] px-4 py-3 text-base text-[var(--foreground)] outline-none transition focus:border-[rgba(214,179,106,0.4)] focus:ring-4 focus:ring-[rgba(214,179,106,0.12)]";
 
-const editorButtonClassName =
-  "inline-flex h-10 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)]";
+function ToolbarBtn({
+  onClick,
+  title,
+  children,
+}: {
+  onClick: () => void;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      title={title}
+      onClick={onClick}
+      className="inline-flex h-[30px] w-[30px] items-center justify-center rounded-lg text-[rgba(245,245,242,0.58)] transition hover:bg-[rgba(255,255,255,0.07)] hover:text-[rgba(245,245,242,0.92)]"
+    >
+      {children}
+    </button>
+  );
+}
+
+function ToolbarDivider() {
+  return <div className="mx-1 h-4 w-px bg-[rgba(255,255,255,0.1)]" aria-hidden="true" />;
+}
 
 function escapeHtml(value: string) {
   return value
@@ -133,12 +155,11 @@ function RichTextEditor({
 }) {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const imageUploadRef = useRef<HTMLInputElement | null>(null);
-  const lastSyncedValueRef = useRef("");
   const [draft, setDraft] = useState(() => getEditorInitialValue(value));
+  const [tab, setTab] = useState<"edit" | "preview">("edit");
 
   function emitChange(nextValue: string) {
     setDraft(nextValue);
-    lastSyncedValueRef.current = nextValue;
     onChange(nextValue);
   }
 
@@ -150,17 +171,12 @@ function RichTextEditor({
     },
   ) {
     const textarea = textareaRef.current;
-    if (!textarea) {
-      return;
-    }
-
+    if (!textarea) return;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const selectedText = draft.slice(start, end);
     const result = transform(selectedText);
-
     emitChange(result.nextValue);
-
     requestAnimationFrame(() => {
       textarea.focus();
       textarea.setSelectionRange(result.selectionStart, result.selectionEnd);
@@ -176,12 +192,7 @@ function RichTextEditor({
       const nextValue = `${draft.slice(0, start)}${before}${activeText}${after}${draft.slice(end)}`;
       const selectionStart = start + before.length;
       const selectionEnd = selectionStart + activeText.length;
-
-      return {
-        nextValue,
-        selectionStart,
-        selectionEnd,
-      };
+      return { nextValue, selectionStart, selectionEnd };
     });
   }
 
@@ -191,16 +202,11 @@ function RichTextEditor({
       const start = textarea?.selectionStart ?? 0;
       const end = textarea?.selectionEnd ?? 0;
       const lines = selectedText
-        ? selectedText.split("\n").map((line) => line.trim()).filter(Boolean)
+        ? selectedText.split("\n").map((l) => l.trim()).filter(Boolean)
         : ["项目一", "项目二"];
-      const listMarkup = `<ul>\n${lines.map((line) => `  <li>${line}</li>`).join("\n")}\n</ul>`;
+      const listMarkup = `<ul>\n${lines.map((l) => `  <li>${l}</li>`).join("\n")}\n</ul>`;
       const nextValue = `${draft.slice(0, start)}${listMarkup}${draft.slice(end)}`;
-
-      return {
-        nextValue,
-        selectionStart: start,
-        selectionEnd: start + listMarkup.length,
-      };
+      return { nextValue, selectionStart: start, selectionEnd: start + listMarkup.length };
     });
   }
 
@@ -212,12 +218,7 @@ function RichTextEditor({
       const code = escapeHtml(selectedText || "const message = 'Hello Maurice';");
       const markup = `<pre><code>${code}</code></pre>`;
       const nextValue = `${draft.slice(0, start)}${markup}${draft.slice(end)}`;
-
-      return {
-        nextValue,
-        selectionStart: start,
-        selectionEnd: start + markup.length,
-      };
+      return { nextValue, selectionStart: start, selectionEnd: start + markup.length };
     });
   }
 
@@ -236,107 +237,154 @@ function RichTextEditor({
       const suffix = end < draft.length ? "\n\n" : "";
       const nextValue = `${draft.slice(0, start)}${prefix}${markup}${suffix}${draft.slice(end)}`;
       const captionStart = start + prefix.length + markup.indexOf("图片说明");
-
-      return {
-        nextValue,
-        selectionStart: captionStart,
-        selectionEnd: captionStart + "图片说明".length,
-      };
+      return { nextValue, selectionStart: captionStart, selectionEnd: captionStart + "图片说明".length };
     });
   }
 
   function handleImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
-
-    if (!file.type.startsWith("image/")) {
-      event.target.value = "";
-      return;
-    }
-
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { event.target.value = ""; return; }
     const reader = new FileReader();
     reader.onload = () => {
-      if (typeof reader.result === "string") {
-        insertImageMarkup(reader.result);
-      }
+      if (typeof reader.result === "string") insertImageMarkup(reader.result);
     };
     reader.readAsDataURL(file);
     event.target.value = "";
   }
 
+  function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (!(event.ctrlKey || event.metaKey)) return;
+    if (event.key === "b") {
+      event.preventDefault();
+      wrapSelection("<strong>", "</strong>", "加粗内容");
+    }
+    if (event.key === "i") {
+      event.preventDefault();
+      wrapSelection("<em>", "</em>", "斜体内容");
+    }
+  }
+
+  const charCount = draft.replace(/<[^>]*>/g, "").replace(/\s+/g, "").length;
+
   return (
-    <div className="space-y-3">
-      <div className="flex flex-wrap gap-2">
-        <button type="button" onClick={() => wrapSelection("<p>", "</p>", "正文内容")} className={editorButtonClassName}>
-          正文
-        </button>
-        <button type="button" onClick={() => wrapSelection("<h2>", "</h2>", "标题 2")} className={editorButtonClassName}>
-          标题 2
-        </button>
-        <button type="button" onClick={() => wrapSelection("<h3>", "</h3>", "标题 3")} className={editorButtonClassName}>
-          标题 3
-        </button>
-        <button type="button" onClick={() => wrapSelection("<strong>", "</strong>", "加粗内容")} className={editorButtonClassName}>
-          加粗
-        </button>
-        <button type="button" onClick={() => wrapSelection("<em>", "</em>", "斜体内容")} className={editorButtonClassName}>
-          斜体
-        </button>
-        <button type="button" onClick={insertList} className={editorButtonClassName}>
-          列表
-        </button>
-        <button type="button" onClick={() => wrapSelection("<blockquote><p>", "</p></blockquote>", "引用内容")} className={editorButtonClassName}>
-          引用
-        </button>
-        <button type="button" onClick={insertCodeBlock} className={editorButtonClassName}>
-          代码块
-        </button>
-        <input
-          ref={imageUploadRef}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={handleImageUpload}
-        />
-        <button
-          type="button"
-          onClick={() => imageUploadRef.current?.click()}
-          className={editorButtonClassName}
-        >
-          图片
-        </button>
+    <div className="overflow-hidden rounded-[20px] border border-[rgba(255,255,255,0.08)] bg-[rgba(0,0,0,0.22)]">
+
+      {/* ── Tab bar ── */}
+      <div className="flex items-center justify-between border-b border-[rgba(255,255,255,0.08)] px-3 py-2">
+        <div className="flex gap-0.5">
+          {(["edit", "preview"] as const).map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setTab(t)}
+              className={`rounded-lg px-3.5 py-1.5 text-sm font-medium transition ${
+                tab === t
+                  ? "bg-[rgba(214,179,106,0.12)] text-[var(--gold)]"
+                  : "text-[var(--muted)] hover:text-[var(--foreground)]"
+              }`}
+            >
+              {t === "edit" ? "编辑" : "预览"}
+            </button>
+          ))}
+        </div>
+        <span className="pr-1 text-[11px] text-[rgba(245,245,242,0.26)]">{charCount} 字</span>
       </div>
 
-      <textarea
-        ref={textareaRef}
-        value={draft}
-        onChange={(event) => emitChange(event.target.value)}
-        className="min-h-[360px] w-full rounded-[26px] border border-[rgba(255,255,255,0.08)] bg-[rgba(0,0,0,0.18)] px-5 py-4 font-mono text-[15px] leading-8 text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] focus:border-[rgba(214,179,106,0.4)] focus:ring-4 focus:ring-[rgba(214,179,106,0.12)]"
-        placeholder="在这里输入正文内容，或使用上方按钮插入标题、列表、引用和代码块 HTML。"
-      />
+      {/* ── Toolbar (edit only) ── */}
+      {tab === "edit" && (
+        <div className="flex flex-wrap items-center gap-0.5 border-b border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.018)] px-3 py-1.5">
+          {/* Block type */}
+          <ToolbarBtn onClick={() => wrapSelection("<p>", "</p>", "正文内容")} title="段落">
+            <span className="font-serif text-[13px]">¶</span>
+          </ToolbarBtn>
+          <ToolbarBtn onClick={() => wrapSelection("<h2>", "</h2>", "标题 2")} title="标题 2">
+            <span className="text-[11px] font-bold leading-none">H<span className="text-[8px] align-sub">2</span></span>
+          </ToolbarBtn>
+          <ToolbarBtn onClick={() => wrapSelection("<h3>", "</h3>", "标题 3")} title="标题 3">
+            <span className="text-[11px] font-bold leading-none">H<span className="text-[8px] align-sub">3</span></span>
+          </ToolbarBtn>
 
-      <div className="overflow-hidden rounded-[26px] border border-[rgba(214,179,106,0.14)] bg-[rgba(255,255,255,0.03)]">
-        <div className="border-b border-[rgba(255,255,255,0.08)] px-5 py-4">
-          <p className="text-xs uppercase tracking-[0.22em] text-[var(--gold)]">Preview</p>
-          <h4 className="mt-2 text-base font-semibold text-[var(--foreground)]">当前内容预览</h4>
-          <p className="mt-1 text-sm text-[var(--muted)]">这里会按前台文章页的排版方式实时展示当前正文。</p>
+          <ToolbarDivider />
+
+          {/* Inline */}
+          <ToolbarBtn onClick={() => wrapSelection("<strong>", "</strong>", "加粗内容")} title="加粗 (⌘B)">
+            <span className="text-[13px] font-extrabold">B</span>
+          </ToolbarBtn>
+          <ToolbarBtn onClick={() => wrapSelection("<em>", "</em>", "斜体内容")} title="斜体 (⌘I)">
+            <span className="font-serif text-[13px] font-semibold italic">I</span>
+          </ToolbarBtn>
+
+          <ToolbarDivider />
+
+          {/* Blocks */}
+          <ToolbarBtn onClick={insertList} title="无序列表">
+            <svg viewBox="0 0 16 16" fill="currentColor" className="h-3.5 w-3.5">
+              <circle cx="2.5" cy="4.5" r="1.4" />
+              <rect x="5.5" y="3.6" width="8.5" height="1.8" rx="0.9" />
+              <circle cx="2.5" cy="8" r="1.4" />
+              <rect x="5.5" y="7.1" width="8.5" height="1.8" rx="0.9" />
+              <circle cx="2.5" cy="11.5" r="1.4" />
+              <rect x="5.5" y="10.6" width="8.5" height="1.8" rx="0.9" />
+            </svg>
+          </ToolbarBtn>
+          <ToolbarBtn onClick={() => wrapSelection("<blockquote><p>", "</p></blockquote>", "引用内容")} title="引用块">
+            <svg viewBox="0 0 16 16" fill="currentColor" className="h-3.5 w-3.5">
+              <path d="M2 6.8C2 5 3.34 3.5 5 3.5h.5V5H5c-.83 0-1.5.67-1.5 1.5V7H6v4H2V6.8ZM9 6.8C9 5 10.34 3.5 12 3.5h.5V5H12c-.83 0-1.5.67-1.5 1.5V7H13v4H9V6.8Z" />
+            </svg>
+          </ToolbarBtn>
+          <ToolbarBtn onClick={insertCodeBlock} title="代码块">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+              <polyline points="4.5,4 1,8 4.5,12" />
+              <polyline points="11.5,4 15,8 11.5,12" />
+              <line x1="9.5" y1="2" x2="6.5" y2="14" />
+            </svg>
+          </ToolbarBtn>
+
+          <ToolbarDivider />
+
+          {/* Media */}
+          <input ref={imageUploadRef} type="file" accept="image/*" aria-label="上传内容图片" className="hidden" onChange={handleImageUpload} />
+          <ToolbarBtn onClick={() => imageUploadRef.current?.click()} title="插入图片">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+              <rect x="1" y="2.5" width="14" height="11" rx="2" />
+              <circle cx="5.5" cy="6.5" r="1.5" />
+              <path d="M1 11l4-3.5 3 2.5 2.5-2 4.5 3.5" />
+            </svg>
+          </ToolbarBtn>
         </div>
-        <div className="px-5 py-6 sm:px-6">
+      )}
+
+      {/* ── Content area ── */}
+      {tab === "edit" ? (
+        <textarea
+          ref={textareaRef}
+          value={draft}
+          onChange={(event) => emitChange(event.target.value)}
+          onKeyDown={handleKeyDown}
+          className="min-h-[420px] w-full resize-y bg-transparent px-5 py-4 font-mono text-[14px] leading-[1.85] text-[rgba(245,245,242,0.88)] outline-none placeholder:text-[rgba(245,245,242,0.22)]"
+          placeholder="在这里输入正文内容，或使用上方工具栏插入格式元素…"
+          spellCheck={false}
+        />
+      ) : (
+        <div className="min-h-[420px] px-6 py-6">
           {draft.trim() ? (
             <ArticleContent content={draft} />
           ) : (
-            <div className="rounded-[22px] border border-dashed border-[rgba(255,255,255,0.1)] bg-[rgba(0,0,0,0.16)] px-5 py-8 text-sm text-[var(--muted)]">
-              还没有正文内容。输入文字或插入图片后，这里会显示实时预览。
+            <div className="flex h-[180px] items-center justify-center rounded-[18px] border border-dashed border-[rgba(255,255,255,0.08)] text-sm text-[var(--muted)]">
+              还没有内容，切换到编辑模式开始写作
             </div>
           )}
         </div>
-      </div>
+      )}
 
-      <p className="text-sm leading-6 text-[var(--muted)]">
-        支持标题、加粗、斜体、列表、引用、代码块和图片。内容会以 HTML 保存，并兼容前台文章页展示。
-      </p>
+      {/* ── Footer ── */}
+      {tab === "edit" && (
+        <div className="flex items-center justify-between border-t border-[rgba(255,255,255,0.05)] px-5 py-2">
+          <p className="text-[11px] text-[rgba(245,245,242,0.22)]">⌘B 加粗 · ⌘I 斜体</p>
+          <p className="text-[11px] text-[rgba(245,245,242,0.22)]">HTML 格式保存</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -415,6 +463,7 @@ export default function PostEditorWorkspace({
                 value={form.title}
                 onChange={(event) => onChange("title", event.target.value)}
                 className={inputClassName}
+                title="文章标题"
                 required
               />
             </Field>
@@ -440,6 +489,7 @@ export default function PostEditorWorkspace({
                 value={form.excerpt}
                 onChange={(event) => onChange("excerpt", event.target.value)}
                 className={`${inputClassName} min-h-[110px] rounded-3xl`}
+                title="文章摘要"
                 rows={4}
               />
             </Field>
@@ -464,6 +514,7 @@ export default function PostEditorWorkspace({
                 value={form.category}
                 onChange={(event) => onChange("category", event.target.value)}
                 className={inputClassName}
+                title="文章分类"
               />
             </Field>
             <Field label="标签（逗号分隔）">
@@ -489,6 +540,7 @@ export default function PostEditorWorkspace({
                   value={form.seoTitle}
                   onChange={(event) => onChange("seoTitle", event.target.value)}
                   className={inputClassName}
+                  title="SEO 标题"
                 />
               </Field>
               <Field label="SEO 描述">
@@ -496,6 +548,7 @@ export default function PostEditorWorkspace({
                   value={form.seoDescription}
                   onChange={(event) => onChange("seoDescription", event.target.value)}
                   className={inputClassName}
+                  title="SEO 描述"
                 />
               </Field>
             </div>
@@ -515,6 +568,7 @@ export default function PostEditorWorkspace({
                       ref={coverUploadRef}
                       type="file"
                       accept="image/*"
+                      aria-label="上传封面图片"
                       className="hidden"
                       onChange={handleCoverUpload}
                     />
@@ -556,6 +610,7 @@ export default function PostEditorWorkspace({
                   value={form.status}
                   onChange={(event) => onChange("status", event.target.value)}
                   className={inputClassName}
+                  title="发布状态"
                 >
                   <option value="DRAFT">草稿</option>
                   <option value="PUBLISHED">已发布</option>

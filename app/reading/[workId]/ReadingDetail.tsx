@@ -199,10 +199,10 @@ export default function ReadingDetail({ workId }: Props) {
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">Public Domain Full Text</p>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">
-                可直接阅读的全文
+                可直接打开的官方记录
               </h2>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--muted)]">
-                这部分全文来自 Project Gutenberg 公版文本，通过 Gutendex 检索匹配后接入。适用于已经进入公版领域的作品。
+                这里现在保留给可直接打开的官方来源记录。当前阅读模块已经切换到国家图书馆中文书目数据，不再依赖英文公版全文源。
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -212,7 +212,7 @@ export default function ReadingDetail({ workId }: Props) {
                 rel="noreferrer"
                 className="inline-flex h-11 items-center justify-center rounded-2xl bg-[var(--gold)] px-5 text-sm font-medium text-black transition hover:brightness-105"
               >
-                打开 Gutenberg 页面
+                打开官方记录
               </a>
               <a
                 href={detail.gutenberg.textUrl}
@@ -220,17 +220,17 @@ export default function ReadingDetail({ workId }: Props) {
                 rel="noreferrer"
                 className="inline-flex h-11 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)]"
               >
-                打开原始全文
+                打开馆藏页面
               </a>
             </div>
           </div>
 
           <div className="mt-5 flex flex-wrap gap-3 text-sm">
             <span className="rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-2 text-[var(--muted)]">
-              Gutenberg ID：{detail.gutenberg.id}
+              记录编号：{detail.gutenberg.id}
             </span>
             <span className="rounded-full border border-emerald-200 bg-white px-4 py-2 text-zinc-700">
-              下载量：{detail.gutenberg.downloadCount ?? "未知"}
+              来源统计：{detail.gutenberg.downloadCount ?? "未知"}
             </span>
           </div>
 
@@ -249,7 +249,7 @@ export default function ReadingDetail({ workId }: Props) {
         </section>
       ) : (
         <section className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-6 text-[var(--muted)] shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
-          当前没有匹配到可直接展示的公版全文，所以这里先展示完整资料页。如果后续接入更多公版全文来源，这里可以继续扩展。
+          当前阅读模块已经切换到国家图书馆中文书目与馆藏数据，所以这里主要展示书目信息、主题标签和馆藏位置，不再默认展示英文公版全文。
         </section>
       )}
 
@@ -304,9 +304,9 @@ export default function ReadingDetail({ workId }: Props) {
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">版本信息</p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">可用版本与延伸阅读</h2>
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">馆藏位置与借阅状态</h2>
             </div>
-            <p className="text-sm text-[var(--muted)]">优先展示前 8 个检索到的版本。</p>
+            <p className="text-sm text-[var(--muted)]">这里展示的是国家图书馆返回的单册馆藏位置、流通状态与索书号信息。</p>
           </div>
 
           <div className="mt-6 grid gap-4">

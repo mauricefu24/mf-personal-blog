@@ -2,287 +2,177 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-type AuthorRef = {
-  author?: {
-    key?: string;
-  };
-};
+const OPAC_BASE_URL = "http://opac.nlc.cn/F/";
 
-type LinkItem = {
-  title?: string;
-  url?: string;
-};
-
-type GutendexBook = {
-  id: number;
-  title?: string;
-  authors?: Array<{
-    name?: string;
-  }>;
-  copyright?: boolean;
-  media_type?: string;
-  formats?: Record<string, string>;
-  download_count?: number;
-};
-
-type OpenLibraryWorkDetail = {
-  key?: string;
-  title?: string;
-  description?: string | { value?: string };
-  excerpts?: Array<{
-    excerpt?: string | { value?: string };
-    comment?: string;
-  }>;
-  covers?: number[];
-  subjects?: string[];
-  subject_people?: string[];
-  subject_places?: string[];
-  subject_times?: string[];
-  links?: LinkItem[];
-  first_publish_date?: string;
-  authors?: AuthorRef[];
-};
-
-type OpenLibraryEdition = {
-  key?: string;
-  title?: string;
-  publish_date?: string;
-  publishers?: string[];
-  number_of_pages?: number;
-  description?: string | { value?: string };
-  covers?: number[];
-  ocaid?: string;
-};
-
-function parseTextField(value: string | { value?: string } | undefined) {
-  if (!value) {
-    return "";
-  }
-
-  if (typeof value === "string") {
-    return value.trim();
-  }
-
-  return value.value?.trim() ?? "";
+function decodeHtml(value: string) {
+  return value
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCharCode(Number.parseInt(code, 16)))
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&apos;|&#39;/gi, "'")
+    .replace(/&ldquo;|&rdquo;/gi, '"')
+    .replace(/&lsquo;|&rsquo;/gi, "'")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">");
 }
 
-function normalizeText(value: string) {
-  return value.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]+/g, " ").trim();
-}
-
-function hasAuthorTokenOverlap(left: string, right: string) {
-  if (!left || !right) {
-    return true;
-  }
-
-  const leftTokens = new Set(left.split(/\s+/).filter((token) => token.length > 1));
-  const rightTokens = right.split(/\s+/).filter((token) => token.length > 1);
-
-  return rightTokens.some((token) => leftTokens.has(token));
-}
-
-function stripGutenbergBoilerplate(text: string) {
-  const startPattern = /\*\*\*\s*START OF (?:THE|THIS) PROJECT GUTENBERG EBOOK[\s\S]*?\*\*\*/i;
-  const endPattern = /\*\*\*\s*END OF (?:THE|THIS) PROJECT GUTENBERG EBOOK[\s\S]*?\*\*\*/i;
-
-  const startMatch = text.match(startPattern);
-  const startIndex = startMatch ? startMatch.index! + startMatch[0].length : 0;
-  const endMatch = text.match(endPattern);
-  const endIndex = endMatch ? endMatch.index! : text.length;
-
-  return text
-    .slice(startIndex, endIndex)
-    .replace(/\r\n/g, "\n")
-    .replace(/\n{3,}/g, "\n\n")
+function stripTags(value: string) {
+  return decodeHtml(value)
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
-function pickPlainTextFormat(formats: Record<string, string> = {}) {
-  return (
-    formats["text/plain; charset=utf-8"] ??
-    formats["text/plain; charset=us-ascii"] ??
-    formats["text/plain"]
+function normalizeTitle(value: string) {
+  return value
+    .split("/")
+    .at(0)
+    ?.replace(/\s*\[[^\]]+\]\s*/g, " ")
+    .replace(/\s+/g, " ")
+    .trim() ?? value;
+}
+
+function pickFirst(values: string[]) {
+  return values.find(Boolean) ?? "";
+}
+
+function getFieldValues(html: string, label: string) {
+  const pattern = new RegExp(
+    `<tr>[\\s\\S]*?<td[^>]*nowrap>\\s*${label}\\s*<\\/td>[\\s\\S]*?<td[^>]*align=left[^>]*>\\s*([\\s\\S]*?)\\s*<\\/td>[\\s\\S]*?<\\/tr>`,
+    "g",
   );
+
+  return Array.from(html.matchAll(pattern)).map((match) => stripTags(match[1] ?? ""));
+}
+
+function getSectionLinks(html: string, fromLabel: string, toLabel: string) {
+  const blockPattern = new RegExp(`${fromLabel}[\\s\\S]*?${toLabel}`, "i");
+  const block = html.match(blockPattern)?.[0] ?? "";
+  return Array.from(block.matchAll(/<A [^>]*>([\s\S]*?)<\/A>/gi))
+    .map((match) => stripTags(match[1] ?? ""))
+    .filter(Boolean);
+}
+
+function parseHoldingRows(html: string) {
+  const rows = Array.from(html.matchAll(/<tr bgcolor="#ffffff">([\s\S]*?)<\/tr>/g));
+
+  return rows
+    .map((row) => {
+      const cells = Array.from(row[1].matchAll(/<td[^>]*class="td1"[^>]*>([\s\S]*?)<\/td>/g)).map((cell) =>
+        stripTags(cell[1] ?? ""),
+      );
+
+      if (cells.length < 9) {
+        return null;
+      }
+
+      const loanStatus = cells[1];
+      const callNumber = cells[2];
+      const shelfStatus = cells[3];
+      const subLibrary = cells[5];
+      const barcode = cells[7];
+      const note = cells[8];
+
+      if (!subLibrary) {
+        return null;
+      }
+
+      return {
+        key: `${subLibrary}-${barcode || callNumber}`,
+        title: subLibrary,
+        publishDate: shelfStatus || "馆藏状态",
+        publishers: [],
+        pages: null,
+        description: [`流通状态：${loanStatus || "未知"}`, callNumber ? `索书号：${callNumber}` : "", note ? `备注：${note}` : ""]
+          .filter(Boolean)
+          .join("；"),
+        coverUrl: null,
+        archiveUrl: null,
+      };
+    })
+    .filter(Boolean);
 }
 
 export async function GET(
   _request: Request,
-  context: { params: Promise<{ workId: string }> }
+  context: { params: Promise<{ workId: string }> },
 ) {
   const { workId } = await context.params;
+  const normalizedWorkId = workId.trim();
 
-  const normalizedWorkId = workId.startsWith("OL") ? workId : workId.toUpperCase();
-  const workKey = `/works/${normalizedWorkId}`;
+  if (!/^\d+$/.test(normalizedWorkId)) {
+    return NextResponse.json({ message: "无效的国家图书馆书目编号。" }, { status: 400 });
+  }
 
-  const workResponse = await fetch(`https://openlibrary.org${workKey}.json`, {
-    cache: "no-store",
-    headers: {
-      Accept: "application/json",
-    },
-  });
+  const detailUrl = `${OPAC_BASE_URL}?func=direct&local_base=NLC01&doc_number=${normalizedWorkId}`;
+  const holdingUrl = `${OPAC_BASE_URL}?func=item-global&doc_library=NLC01&doc_number=${normalizedWorkId}`;
 
-  if (!workResponse.ok) {
+  const [detailResponse, holdingResponse] = await Promise.all([
+    fetch(detailUrl, {
+      cache: "no-store",
+      headers: { Accept: "text/html,application/xhtml+xml" },
+    }),
+    fetch(holdingUrl, {
+      cache: "no-store",
+      headers: { Accept: "text/html,application/xhtml+xml" },
+    }),
+  ]);
+
+  if (!detailResponse.ok) {
     return NextResponse.json({ message: "未找到对应书籍详情。" }, { status: 404 });
   }
 
-  const work = (await workResponse.json()) as OpenLibraryWorkDetail;
+  const [detailHtml, holdingHtml] = await Promise.all([
+    detailResponse.text(),
+    holdingResponse.ok ? holdingResponse.text() : Promise.resolve(""),
+  ]);
 
-  const authorKeys = work.authors?.map((item) => item.author?.key).filter(Boolean) as string[] | undefined;
-  const authorNames = authorKeys
-    ? await Promise.all(
-        authorKeys.map(async (authorKey) => {
-          try {
-            const response = await fetch(`https://openlibrary.org${authorKey}.json`, {
-              cache: "no-store",
-              headers: {
-                Accept: "application/json",
-              },
-            });
-
-            if (!response.ok) {
-              return null;
-            }
-
-            const data = (await response.json()) as { name?: string };
-            return data.name ?? null;
-          } catch {
-            return null;
-          }
-        })
-      )
-    : [];
-
-  let gutenberg:
-    | {
-        id: number;
-        title: string;
-        author: string;
-        sourceUrl: string;
-        textUrl: string;
-        coverUrl: string | null;
-        downloadCount: number | null;
-        fullText: string;
-      }
-    | null = null;
-
-  try {
-    const searchTerm = [work.title, authorNames[0]].filter(Boolean).join(" ");
-    const gutendexResponse = await fetch(
-      `https://gutendex.com/books/?search=${encodeURIComponent(searchTerm)}`,
-      {
-        cache: "no-store",
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    );
-
-    if (gutendexResponse.ok) {
-      const gutendexData = (await gutendexResponse.json()) as { results?: GutendexBook[] };
-      const normalizedTitle = normalizeText(work.title ?? "");
-      const normalizedAuthor = normalizeText(authorNames[0] ?? "");
-
-      const match =
-        gutendexData.results?.find((item) => {
-          const title = normalizeText(item.title ?? "");
-          const author = normalizeText(item.authors?.[0]?.name ?? "");
-
-          const titleMatches = normalizedTitle && title.includes(normalizedTitle);
-          const authorMatches = hasAuthorTokenOverlap(normalizedAuthor, author);
-          const isText = item.media_type === "Text";
-          const isPublicDomain = item.copyright === false;
-          const textUrl = pickPlainTextFormat(item.formats);
-
-          return titleMatches && authorMatches && isText && isPublicDomain && Boolean(textUrl);
-        }) ?? null;
-
-      if (match) {
-        const textUrl = pickPlainTextFormat(match.formats);
-
-        if (textUrl) {
-          const textResponse = await fetch(textUrl, {
-            cache: "no-store",
-            headers: {
-              Accept: "text/plain",
-            },
-          });
-
-          if (textResponse.ok) {
-            const rawText = await textResponse.text();
-            const fullText = stripGutenbergBoilerplate(rawText);
-
-            if (fullText) {
-              gutenberg = {
-                id: match.id,
-                title: match.title ?? work.title ?? "未知标题",
-                author: match.authors?.[0]?.name ?? authorNames[0] ?? "未知作者",
-                sourceUrl: `https://www.gutenberg.org/ebooks/${match.id}`,
-                textUrl,
-                coverUrl: match.formats?.["image/jpeg"] ?? null,
-                downloadCount: match.download_count ?? null,
-                fullText,
-              };
-            }
-          }
-        }
-      }
-    }
-  } catch {
-    gutenberg = null;
-  }
-
-  const editionsResponse = await fetch(`https://openlibrary.org${workKey}/editions.json?limit=8`, {
-    cache: "no-store",
-    headers: {
-      Accept: "application/json",
-    },
-  });
-
-  const editionsData = editionsResponse.ok
-    ? ((await editionsResponse.json()) as { entries?: OpenLibraryEdition[]; size?: number })
-    : { entries: [], size: 0 };
-
-  const coverId = work.covers?.find((item) => typeof item === "number" && item > 0) ?? null;
-  const description = parseTextField(work.description);
-  const excerpts = (work.excerpts ?? [])
-    .map((item) => ({
-      text: parseTextField(item.excerpt),
-      comment: item.comment?.trim() ?? "",
-    }))
-    .filter((item) => item.text);
-
-  const editions = (editionsData.entries ?? []).map((edition) => {
-    const editionCoverId = edition.covers?.find((item) => typeof item === "number" && item > 0) ?? null;
-
-    return {
-      key: edition.key ?? "",
-      title: edition.title ?? work.title ?? "未命名版本",
-      publishDate: edition.publish_date ?? "未知",
-      publishers: edition.publishers ?? [],
-      pages: edition.number_of_pages ?? null,
-      description: parseTextField(edition.description),
-      coverUrl: editionCoverId ? `https://covers.openlibrary.org/b/id/${editionCoverId}-M.jpg` : null,
-      archiveUrl: edition.ocaid ? `https://archive.org/details/${edition.ocaid}` : null,
-    };
-  });
+  const titleResponsibility = pickFirst(getFieldValues(detailHtml, "题名与责任"));
+  const title = normalizeTitle(titleResponsibility);
+  const publication = pickFirst(getFieldValues(detailHtml, "出版项"));
+  const carrier = pickFirst(getFieldValues(detailHtml, "载体形态项"));
+  const series = pickFirst(getFieldValues(detailHtml, "丛编项"));
+  const note = pickFirst(getFieldValues(detailHtml, "一般附注"));
+  const author = pickFirst(getFieldValues(detailHtml, "著者"));
+  const additionalEntry = pickFirst(getFieldValues(detailHtml, "附加款目"));
+  const classification = pickFirst(getFieldValues(detailHtml, "中图分类号"));
+  const subjects = getSectionLinks(detailHtml, "主题", "中图分类号").slice(0, 16);
+  const holdings = getFieldValues(detailHtml, "馆藏").slice(0, 12);
+  const descriptionParts = [publication, carrier, series, note, classification ? `中图分类号：${classification}` : ""].filter(Boolean);
+  const yearMatch = publication.match(/(\d{4})/);
+  const holdingItems = holdingHtml ? parseHoldingRows(holdingHtml) : [];
 
   return NextResponse.json({
-    key: workKey,
+    key: normalizedWorkId,
     workId: normalizedWorkId,
-    title: work.title ?? "未命名书籍",
-    authors: authorNames.filter(Boolean),
-    firstPublishDate: work.first_publish_date ?? null,
-    coverUrl: coverId ? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg` : null,
-    description,
-    excerpts,
-    subjects: (work.subjects ?? []).slice(0, 16),
-    people: (work.subject_people ?? []).slice(0, 12),
-    places: (work.subject_places ?? []).slice(0, 12),
-    times: (work.subject_times ?? []).slice(0, 12),
-    links: (work.links ?? []).filter((item) => item.title && item.url).slice(0, 8),
-    editions,
-    editionCount: editionsData.size ?? editions.length,
-    sourceUrl: `https://openlibrary.org${workKey}`,
-    gutenberg,
+    title: title || "未命名图书",
+    authors: [author, additionalEntry].filter(Boolean),
+    firstPublishDate: yearMatch?.[1] ?? null,
+    coverUrl: null,
+    description: descriptionParts.join("\n\n") || "当前记录以国家图书馆书目与馆藏信息为主。",
+    excerpts: [],
+    subjects,
+    people: [],
+    places: [],
+    times: [],
+    links: [
+      {
+        title: "国家图书馆 OPAC 记录",
+        url: detailUrl,
+      },
+      {
+        title: "查看馆藏单册信息",
+        url: holdingUrl,
+      },
+    ],
+    editions: holdingItems,
+    editionCount: holdingItems.length || holdings.length,
+    sourceUrl: detailUrl,
+    gutenberg: null,
   });
 }

@@ -179,40 +179,51 @@ function HeroIllustration() {
       >
         <defs>
           <radialGradient id="phaseGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#f8fafc" stopOpacity="0.85" />
-            <stop offset="0.55" stopColor="#dbeafe" stopOpacity="0.28" />
-            <stop offset="1" stopColor="#dbeafe" stopOpacity="0" />
+            <stop offset="0%" stopColor="#f8fafc" stopOpacity="0.9" />
+            <stop offset="45%" stopColor="#dbeafe" stopOpacity="0.3" />
+            <stop offset="75%" stopColor="#bfdbfe" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#bfdbfe" stopOpacity="0" />
           </radialGradient>
-          <radialGradient id="moonSurface" cx="36%" cy="32%" r="72%">
+          <radialGradient id="moonSurface" cx="36%" cy="30%" r="72%">
             <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="0.52" stopColor="#f8fafc" />
-            <stop offset="1" stopColor="#d8e1ec" />
+            <stop offset="42%" stopColor="#f8fafc" />
+            <stop offset="78%" stopColor="#e2e8f0" />
+            <stop offset="100%" stopColor="#c8d5e4" />
+          </radialGradient>
+          <radialGradient id="specularHL" cx="33%" cy="27%" r="42%">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
+            <stop offset="60%" stopColor="#ffffff" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
           </radialGradient>
           <linearGradient id="orbitStroke" x1="0%" x2="100%" y1="0%" y2="100%">
             <stop offset="0%" stopColor="#cbd5e1" stopOpacity="0.28" />
             <stop offset="0.5" stopColor="#c4b5fd" stopOpacity="0.38" />
             <stop offset="1" stopColor="#bae6fd" stopOpacity="0.18" />
           </linearGradient>
-          <radialGradient id="umbra" cx="50%" cy="50%" r="62%">
-            <stop offset="0%" stopColor="#020617" stopOpacity="0.92" />
-            <stop offset="0.78" stopColor="#0f172a" stopOpacity="0.74" />
-            <stop offset="1" stopColor="#1e293b" stopOpacity="0.18" />
+          <radialGradient id="umbra" cx="72%" cy="50%" r="58%">
+            <stop offset="0%" stopColor="#020617" stopOpacity="0.9" />
+            <stop offset="65%" stopColor="#0f172a" stopOpacity="0.58" />
+            <stop offset="100%" stopColor="#1e293b" stopOpacity="0" />
           </radialGradient>
           <filter id="softBlur" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="6" />
+            <feGaussianBlur stdDeviation="7" />
           </filter>
-          <filter id="moonShadow" x="-40%" y="-40%" width="180%" height="180%">
-            <feDropShadow dx="0" dy="18" stdDeviation="22" floodColor="#94a3b8" floodOpacity="0.16" />
+          <filter id="moonGlow" x="-40%" y="-40%" width="180%" height="180%">
+            <feDropShadow dx="0" dy="0" stdDeviation="18" floodColor="#e2e8f0" floodOpacity="0.42" />
+            <feDropShadow dx="0" dy="14" stdDeviation="20" floodColor="#94a3b8" floodOpacity="0.13" />
           </filter>
           <clipPath id="moonClip">
             <circle cx="280" cy="210" r="88" />
           </clipPath>
         </defs>
 
-        <g opacity="0.8">
-          <circle cx="280" cy="210" r="150" fill="url(#phaseGlow)" />
+        {/* Outer halo */}
+        <circle cx="280" cy="210" r="150" fill="url(#phaseGlow)" opacity="0.88" />
+
+        {/* Orbital rings */}
+        <g opacity="0.78">
           <circle cx="280" cy="210" r="126" fill="none" stroke="url(#orbitStroke)" strokeWidth="1.25" />
-          <circle cx="280" cy="210" r="108" fill="none" stroke="#cbd5e1" strokeOpacity="0.55" strokeWidth="1" strokeDasharray="2 10">
+          <circle cx="280" cy="210" r="108" fill="none" stroke="#cbd5e1" strokeOpacity="0.5" strokeWidth="1" strokeDasharray="2 10">
             <animateTransform
               attributeName="transform"
               type="rotate"
@@ -224,6 +235,7 @@ function HeroIllustration() {
           </circle>
         </g>
 
+        {/* Stars */}
         <g fill="#cbd5e1">
           <circle cx="132" cy="118" r="2.1" opacity="0.82">
             <animate attributeName="opacity" values="0.2;0.85;0.2" dur="4.8s" repeatCount="indefinite" />
@@ -240,75 +252,79 @@ function HeroIllustration() {
           <circle cx="114" cy="296" r="1.6" opacity="0.58">
             <animate attributeName="opacity" values="0.15;0.76;0.15" dur="5.4s" begin="0.9s" repeatCount="indefinite" />
           </circle>
+          <circle cx="362" cy="58" r="1.4" opacity="0.5">
+            <animate attributeName="opacity" values="0.1;0.62;0.1" dur="7.1s" begin="2.2s" repeatCount="indefinite" />
+          </circle>
         </g>
 
-        <path
-          d="M174 338C208 324 240 318 280 318C320 318 352 324 386 338"
-          fill="none"
-          stroke="#cbd5e1"
-          strokeOpacity="0.55"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
-        <path
-          d="M206 352C230 346 252 344 280 344C308 344 330 346 354 352"
-          fill="none"
-          stroke="#e2e8f0"
-          strokeWidth="1.4"
-          strokeLinecap="round"
-        />
+        {/* Stand lines */}
+        <path d="M174 338C208 324 240 318 280 318C320 318 352 324 386 338" fill="none" stroke="#cbd5e1" strokeOpacity="0.5" strokeWidth="1.6" strokeLinecap="round" />
+        <path d="M206 352C230 346 252 344 280 344C308 344 330 346 354 352" fill="none" stroke="#e2e8f0" strokeWidth="1.4" strokeLinecap="round" />
 
-        <g filter="url(#moonShadow)">
+        {/* Moon sphere */}
+        <g filter="url(#moonGlow)">
           <circle cx="280" cy="210" r="88" fill="url(#moonSurface)" />
-          <circle cx="280" cy="210" r="88" fill="none" stroke="#f8fafc" strokeOpacity="0.85" strokeWidth="1.6" />
         </g>
 
+        {/* Clipped surface details */}
         <g clipPath="url(#moonClip)">
+
+          {/* ── Rotating surface (mare + craters) ── */}
           <g>
             <animateTransform
               attributeName="transform"
-              type="translate"
-              values="0 0;-54 0;0 0"
-              dur="18s"
+              type="rotate"
+              from="0 280 210"
+              to="360 280 210"
+              dur="44s"
               repeatCount="indefinite"
             />
-            <g opacity="0.44">
-              <circle cx="246" cy="180" r="8" fill="#d7dee9" />
-              <circle cx="316" cy="238" r="12" fill="#d3dbe6" />
-              <circle cx="322" cy="166" r="5" fill="#d7dee9" />
-              <circle cx="254" cy="242" r="6" fill="#dfe5ee" />
-              <circle cx="356" cy="204" r="11" fill="#d6dde7" />
-              <circle cx="202" cy="214" r="9" fill="#dde4ed" />
+            {/* Mare (dark region blobs) */}
+            <g opacity="0.34">
+              <ellipse cx="256" cy="190" rx="20" ry="16" fill="#c2cedf" />
+              <ellipse cx="312" cy="230" rx="17" ry="13" fill="#c6d2e0" />
+              <ellipse cx="294" cy="170" rx="11" ry="9" fill="#c2cedf" />
+              <ellipse cx="242" cy="228" rx="14" ry="10" fill="#cad6e4" />
+              <ellipse cx="338" cy="196" rx="15" ry="11" fill="#c2cedf" />
+              <ellipse cx="216" cy="198" rx="9" ry="7" fill="#c6d2de" />
+              <ellipse cx="270" cy="248" rx="10" ry="8" fill="#c4d0de" />
             </g>
-
-            <g opacity="0.16">
-              <path d="M170 174C220 142 340 146 390 186" fill="none" stroke="#94a3b8" strokeWidth="14" strokeLinecap="round" />
-              <path d="M186 252C234 230 318 228 382 264" fill="none" stroke="#cbd5e1" strokeWidth="10" strokeLinecap="round" />
+            {/* Crater rings */}
+            <g opacity="0.22" fill="none" stroke="#a4b4c8" strokeLinecap="round">
+              <circle cx="262" cy="184" r="8.5" strokeWidth="1.6" />
+              <circle cx="310" cy="226" r="11" strokeWidth="1.5" />
+              <circle cx="294" cy="166" r="5.5" strokeWidth="1.2" />
+              <circle cx="340" cy="192" r="8.5" strokeWidth="1.2" />
+              <circle cx="244" cy="224" r="6.5" strokeWidth="1" />
+              <circle cx="228" cy="204" r="4" strokeWidth="1" />
+              <circle cx="272" cy="250" r="5" strokeWidth="1" />
+            </g>
+            {/* Subtle surface ridge lines */}
+            <g opacity="0.1" fill="none" stroke="#94a3b8" strokeLinecap="round">
+              <path d="M172 174C222 146 338 148 388 184" strokeWidth="13" />
+              <path d="M188 252C236 232 320 230 382 262" strokeWidth="9" />
             </g>
           </g>
 
-          <ellipse cx="278" cy="210" rx="92" ry="90" fill="#ffffff" fillOpacity="0.08">
-            <animate
-              attributeName="opacity"
-              values="0.02;0.08;0.02"
-              dur="9s"
-              repeatCount="indefinite"
-            />
-          </ellipse>
+          {/* Fixed specular highlight — does NOT rotate */}
+          <ellipse cx="260" cy="188" rx="55" ry="46" fill="url(#specularHL)" />
 
+          {/* Fixed terminator shadow — does NOT rotate */}
           <g filter="url(#softBlur)">
-            <ellipse cx="360" cy="210" rx="98" ry="100" fill="url(#umbra)" opacity="0.22">
-              <animate
-                attributeName="cx"
-                values="350;366;350"
-                dur="12s"
-                repeatCount="indefinite"
-              />
-            </ellipse>
+            <ellipse cx="354" cy="210" rx="97" ry="93" fill="url(#umbra)" opacity="0.3" />
           </g>
+
+          {/* Pulse shimmer */}
+          <ellipse cx="278" cy="210" rx="91" ry="89" fill="#ffffff" fillOpacity="0.05">
+            <animate attributeName="opacity" values="0.02;0.07;0.02" dur="9s" repeatCount="indefinite" />
+          </ellipse>
         </g>
 
-        <g opacity="0.55">
+        {/* Moon border */}
+        <circle cx="280" cy="210" r="88" fill="none" stroke="#f8fafc" strokeOpacity="0.82" strokeWidth="1.4" />
+
+        {/* Rotating cardinal tick marks */}
+        <g opacity="0.52">
           <animateTransform
             attributeName="transform"
             type="rotate"
@@ -321,6 +337,10 @@ function HeroIllustration() {
           <path d="M280 362v-14" stroke="#cbd5e1" strokeWidth="1.6" strokeLinecap="round" />
           <path d="M142 210h-14" stroke="#cbd5e1" strokeWidth="1.6" strokeLinecap="round" />
           <path d="M432 210h-14" stroke="#cbd5e1" strokeWidth="1.6" strokeLinecap="round" />
+          <path d="M191 99l-9-9" stroke="#cbd5e1" strokeWidth="1" strokeLinecap="round" opacity="0.55" />
+          <path d="M369 99l9-9" stroke="#cbd5e1" strokeWidth="1" strokeLinecap="round" opacity="0.55" />
+          <path d="M191 321l-9 9" stroke="#cbd5e1" strokeWidth="1" strokeLinecap="round" opacity="0.55" />
+          <path d="M369 321l9 9" stroke="#cbd5e1" strokeWidth="1" strokeLinecap="round" opacity="0.55" />
         </g>
       </svg>
     </div>

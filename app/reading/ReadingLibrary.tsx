@@ -18,43 +18,43 @@ type Book = {
   sourceUrl: string;
 };
 
-const quickSearches = ["红楼梦", "Pride and Prejudice", "War and Peace", "百年孤独"];
-const fullTextBooks = [
+const quickSearches = ["红楼梦", "西游记", "水浒传", "三国演义", "边城", "骆驼祥子"];
+const featuredBooks = [
   {
-    workId: "OL66554W",
-    title: "Pride and Prejudice",
-    author: "Jane Austen",
-    summary: "经典爱情与社会观察小说，当前已经验证可匹配到 Project Gutenberg 全文。",
+    workId: "014082023",
+    title: "红楼梦",
+    author: "(清)曹雪芹",
+    summary: "国家图书馆中文馆藏中的经典文学书目，适合直接进入中文书目详情页查看馆藏与主题信息。",
   },
   {
-    workId: "OL450063W",
-    title: "Frankenstein",
-    author: "Mary Shelley",
-    summary: "哥特与科幻文学名作，适合测试全文阅读体验和长篇正文展示。",
+    workId: "014222268",
+    title: "三国演义",
+    author: "(明)罗贯中",
+    summary: "以国家图书馆中文馆藏为基础，保留中文书目、作者责任和馆藏位置的阅读入口。",
   },
   {
-    workId: "OL85892W",
-    title: "Dracula",
-    author: "Bram Stoker",
-    summary: "吸血鬼题材代表作，公版文本资源丰富，适合直接进入全文阅读。",
+    workId: "014069188",
+    title: "西游记",
+    author: "(明)吴承恩",
+    summary: "用中文书目数据替代英文开放图书源后，更适合作为名著阅读模块的长期入口。",
   },
   {
-    workId: "OL8193416W",
-    title: "The Picture of Dorian Gray",
-    author: "Oscar Wilde",
-    summary: "王尔德代表作之一，适合展示文学名著的长段落阅读和摘录内容。",
+    workId: "014082110",
+    title: "水浒传",
+    author: "(明)施耐庵",
+    summary: "保留名著阅读详情页结构，但内容来源切换为国家图书馆 OPAC 的中文书目信息。",
   },
   {
-    workId: "OL262421W",
-    title: "The Adventures of Sherlock Holmes",
-    author: "Arthur Conan Doyle",
-    summary: "短篇集形式很适合后续扩展目录、章节跳转和案件索引。",
+    workId: "014213152",
+    title: "骆驼祥子",
+    author: "老舍",
+    summary: "现代文学作品也可以直接进入馆藏详情，查看出版项、附注和馆藏位置。",
   },
   {
-    workId: "OL1095427W",
-    title: "Jane Eyre",
-    author: "Charlotte Brontë",
-    summary: "经典女性成长小说，适合作为全文阅读和人物关系梳理的示例。",
+    workId: "013811611",
+    title: "边城",
+    author: "沈从文",
+    summary: "以中文来源为主的数据链路更适合后续继续扩展书单、摘录与中文阅读笔记。",
   },
 ] as const;
 
@@ -71,7 +71,7 @@ function workIdFromKey(key: string) {
 }
 
 export default function ReadingLibrary() {
-  const [query, setQuery] = useState("Pride and Prejudice");
+  const [query, setQuery] = useState("红楼梦");
   const [searchedQuery, setSearchedQuery] = useState("");
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
@@ -122,7 +122,7 @@ export default function ReadingLibrary() {
             搜索你想阅读的名著
           </h2>
           <p className="mt-4 text-sm leading-7 text-[var(--muted)] sm:text-base">
-            通过 Open Library 的公开数据搜索书籍，结果会展示封面、作者、出版时间以及作品简介，适合做名著阅读入口和资料索引。
+            通过国家图书馆 OPAC 的中文书目数据搜索图书，结果会展示作者、出版社、出版年份与馆藏复本，适合作为中文名著阅读入口和资料索引。
           </p>
         </div>
 
@@ -162,30 +162,30 @@ export default function ReadingLibrary() {
       <section className="premium-panel rounded-[28px] p-5 sm:p-6">
         <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.08)] pb-5">
           <div>
-            <p className="text-sm font-medium uppercase tracking-[0.24em] text-[var(--gold)]">Full Text Collection</p>
+            <p className="text-sm font-medium uppercase tracking-[0.24em] text-[var(--gold)]">Featured Collection</p>
             <h3 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">
-              可匹配全文的推荐图书列表
+              中文经典推荐书目
             </h3>
           </div>
           <p className="max-w-2xl text-sm leading-7 text-[var(--muted)]">
-            这些书优先选择了已经进入公版领域、并且较容易匹配到 Project Gutenberg 全文的经典作品。
+            这里展示的是切换到国家图书馆中文数据源后更适合作为模块入口的经典书目，可直接进入中文详情页查看书目信息和馆藏位置。
           </p>
         </div>
 
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
-          {fullTextBooks.map((book) => (
+          {featuredBooks.map((book) => (
             <article
               key={book.workId}
               className="rounded-[24px] border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.02)_100%)] p-5 shadow-[0_18px_40px_rgba(0,0,0,0.28)]"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-sm uppercase tracking-[0.22em] text-[var(--gold)]">Public Domain</p>
+                  <p className="text-sm uppercase tracking-[0.22em] text-[var(--gold)]">Chinese Classics</p>
                   <h4 className="mt-3 text-2xl font-semibold tracking-tight text-[var(--foreground)]">{book.title}</h4>
                   <p className="mt-2 text-sm text-[var(--muted)]">{book.author}</p>
                 </div>
                 <span className="rounded-full border border-[rgba(214,179,106,0.18)] bg-[rgba(214,179,106,0.08)] px-3 py-1 text-xs font-semibold text-[var(--gold)]">
-                  全文候选
+                  中文来源
                 </span>
               </div>
 
@@ -196,7 +196,7 @@ export default function ReadingLibrary() {
                   href={`/reading/${book.workId}`}
                   className="inline-flex h-11 items-center justify-center rounded-2xl bg-[var(--gold)] px-5 text-sm font-medium text-black transition hover:brightness-105"
                 >
-                  直接阅读
+                  查看详情
                 </Link>
                 <button
                   type="button"
@@ -206,7 +206,7 @@ export default function ReadingLibrary() {
                   }}
                   className="inline-flex h-11 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)]"
                 >
-                  在搜索结果中查看
+                  在馆藏结果中查看
                 </button>
               </div>
             </article>
