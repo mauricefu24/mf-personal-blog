@@ -241,12 +241,12 @@ export default function SnakeGame() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-      <div className="rounded-[28px] border border-orange-200/70 bg-white/90 p-5 shadow-sm sm:p-6">
+      <div className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5 shadow-[0_18px_40px_rgba(0,0,0,0.28)] sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-medium uppercase tracking-[0.28em] text-orange-600">Snake</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950">贪吃蛇小游戏</h2>
-            <p className="mt-3 max-w-md text-sm leading-7 text-zinc-600">
+            <p className="text-sm font-medium uppercase tracking-[0.28em] text-[var(--gold)]">Snake</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--foreground)]">贪吃蛇小游戏</h2>
+            <p className="mt-3 max-w-md text-sm leading-7 text-[var(--muted)]">
               使用方向键或 WASD 控制移动。吃到果实会加分并变长，撞墙或撞到自己则结束。
             </p>
           </div>
@@ -254,32 +254,32 @@ export default function SnakeGame() {
           <button
             type="button"
             onClick={phase === "running" ? resetGame : startGame}
-            className="inline-flex h-12 items-center justify-center rounded-2xl bg-orange-500 px-5 text-sm font-semibold text-white transition hover:bg-orange-600"
+            className="inline-flex h-12 items-center justify-center rounded-2xl bg-[var(--gold)] px-5 text-sm font-semibold text-black transition hover:brightness-105"
           >
             {phase === "running" ? "重新开始" : phase === "game-over" ? "再来一局" : "开始游戏"}
           </button>
         </div>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          <div className="rounded-[20px] border border-zinc-200 bg-orange-50 px-4 py-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-orange-700">当前分数</p>
-            <p className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950">{score}</p>
+          <div className="rounded-[20px] border border-[rgba(214,179,106,0.16)] bg-[rgba(214,179,106,0.08)] px-4 py-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-[var(--gold)]">当前分数</p>
+            <p className="mt-3 text-3xl font-semibold tracking-tight text-[var(--foreground)]">{score}</p>
           </div>
-          <div className="rounded-[20px] border border-zinc-200 bg-white px-4 py-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-zinc-500">最高分</p>
-            <p className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950">{bestScore}</p>
+          <div className="rounded-[20px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-[var(--muted)]">最高分</p>
+            <p className="mt-3 text-3xl font-semibold tracking-tight text-[var(--foreground)]">{bestScore}</p>
           </div>
-          <div className="rounded-[20px] border border-zinc-200 bg-white px-4 py-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-zinc-500">状态</p>
-            <p className="mt-3 text-lg font-semibold tracking-tight text-zinc-950">
+          <div className="rounded-[20px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-[var(--muted)]">状态</p>
+            <p className="mt-3 text-lg font-semibold tracking-tight text-[var(--foreground)]">
               {phase === "idle" ? "等待开始" : phase === "running" ? "进行中" : "游戏结束"}
             </p>
           </div>
         </div>
 
-        <div className="mt-6 rounded-[24px] border border-orange-100 bg-[linear-gradient(180deg,_#fff7ed_0%,_#ffffff_100%)] p-5">
-          <p className="text-sm font-semibold text-zinc-900">操作说明</p>
-          <div className="mt-4 space-y-3 text-sm leading-6 text-zinc-600">
+        <div className="mt-6 rounded-[24px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5">
+          <p className="text-sm font-semibold text-[var(--foreground)]">操作说明</p>
+          <div className="mt-4 space-y-3 text-sm leading-6 text-[var(--muted)]">
             <p>方向键或 `W A S D` 控制方向。</p>
             <p>`Enter` 可以在待开始或结束时快速开局。</p>
             <p>分数越高，移动速度会逐渐变快。</p>
@@ -296,7 +296,7 @@ export default function SnakeGame() {
               }
               queueDirection("up");
             }}
-            className="inline-flex h-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-lg font-semibold text-zinc-700"
+            className="inline-flex h-14 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] text-lg font-semibold text-[var(--foreground)]"
           >
             ↑
           </button>
@@ -309,7 +309,7 @@ export default function SnakeGame() {
               }
               queueDirection("left");
             }}
-            className="inline-flex h-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-lg font-semibold text-zinc-700"
+            className="inline-flex h-14 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] text-lg font-semibold text-[var(--foreground)]"
           >
             ←
           </button>
@@ -321,7 +321,7 @@ export default function SnakeGame() {
               }
               queueDirection("down");
             }}
-            className="inline-flex h-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-lg font-semibold text-zinc-700"
+            className="inline-flex h-14 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] text-lg font-semibold text-[var(--foreground)]"
           >
             ↓
           </button>
@@ -333,14 +333,14 @@ export default function SnakeGame() {
               }
               queueDirection("right");
             }}
-            className="inline-flex h-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-lg font-semibold text-zinc-700"
+            className="inline-flex h-14 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] text-lg font-semibold text-[var(--foreground)]"
           >
             →
           </button>
         </div>
       </div>
 
-      <div className="rounded-[28px] border border-zinc-200 bg-[linear-gradient(180deg,_rgba(255,255,255,0.88)_0%,_rgba(255,247,237,0.92)_100%)] p-4 shadow-[0_24px_60px_rgba(120,53,15,0.08)] sm:p-5">
+      <div className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.28)] sm:p-5">
         <div
           className="grid aspect-square w-full gap-1 rounded-[24px] border border-white/70 bg-[linear-gradient(180deg,_rgba(255,251,235,0.95)_0%,_rgba(255,255,255,0.95)_100%)] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]"
           style={{
@@ -350,7 +350,7 @@ export default function SnakeGame() {
           {boardCells}
         </div>
 
-        <div className="mt-4 rounded-[20px] border border-zinc-200 bg-white/90 px-4 py-4 text-sm text-zinc-600">
+        <div className="mt-4 rounded-[20px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-4 text-sm text-[var(--muted)]">
           {phase === "idle" ? "按开始游戏，或直接按方向键开始移动。" : null}
           {phase === "running" ? "吃掉红色果实，不要撞墙，也别咬到自己。" : null}
           {phase === "game-over" ? "这一局结束了，点击“再来一局”继续挑战更高分。" : null}

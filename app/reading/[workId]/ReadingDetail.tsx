@@ -106,7 +106,7 @@ export default function ReadingDetail({ workId }: Props) {
 
   if (loading) {
     return (
-      <div className="rounded-[28px] border border-zinc-200 bg-white p-8 text-zinc-600 shadow-sm">
+      <div className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-8 text-[var(--muted)] shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
         正在加载图书完整内容...
       </div>
     );
@@ -114,7 +114,7 @@ export default function ReadingDetail({ workId }: Props) {
 
   if (error || !detail) {
     return (
-      <div className="rounded-[28px] border border-rose-200 bg-rose-50 p-8 text-rose-700 shadow-sm">
+      <div className="rounded-[28px] border border-[rgba(214,179,106,0.18)] bg-[rgba(214,179,106,0.08)] p-8 text-[var(--gold)] shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
         {error ?? "未找到图书内容。"}
       </div>
     );
@@ -125,7 +125,7 @@ export default function ReadingDetail({ workId }: Props) {
       <div className="flex flex-wrap gap-3">
         <Link
           href="/reading"
-          className="inline-flex h-11 items-center justify-center rounded-2xl border border-zinc-200 bg-white px-5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50"
+          className="inline-flex h-11 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)]"
         >
           返回书籍搜索
         </Link>
@@ -133,14 +133,14 @@ export default function ReadingDetail({ workId }: Props) {
           href={detail.sourceUrl}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex h-11 items-center justify-center rounded-2xl bg-emerald-600 px-5 text-sm font-medium text-white transition hover:bg-emerald-700"
+          className="inline-flex h-11 items-center justify-center rounded-2xl bg-[var(--gold)] px-5 text-sm font-medium text-black transition hover:brightness-105"
         >
           打开 Open Library 来源
         </a>
       </div>
 
-      <section className="grid gap-6 rounded-[30px] border border-zinc-200 bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.06)] lg:grid-cols-[260px_1fr]">
-        <div className="overflow-hidden rounded-[24px] border border-zinc-200 bg-zinc-100">
+      <section className="grid gap-6 rounded-[30px] border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.02)_100%)] p-6 shadow-[0_18px_40px_rgba(0,0,0,0.28)] lg:grid-cols-[260px_1fr]">
+        <div className="overflow-hidden rounded-[24px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)]">
           {detail.coverUrl ? (
             <Image
               src={detail.coverUrl}
@@ -150,23 +150,23 @@ export default function ReadingDetail({ workId }: Props) {
               className="h-full w-full object-cover"
             />
           ) : (
-            <div className="flex h-full min-h-[360px] items-center justify-center bg-[linear-gradient(180deg,_#ecfdf5_0%,_#d1fae5_100%)] px-6 text-center text-sm font-medium leading-7 text-emerald-800">
+            <div className="flex h-full min-h-[360px] items-center justify-center bg-[linear-gradient(180deg,rgba(214,179,106,0.12)_0%,rgba(255,255,255,0.03)_100%)] px-6 text-center text-sm font-medium leading-7 text-[var(--gold)]">
               暂无封面
             </div>
           )}
         </div>
 
         <div className="min-w-0">
-          <p className="text-sm uppercase tracking-[0.26em] text-emerald-700">Full Reading Detail</p>
-          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
+          <p className="text-sm uppercase tracking-[0.26em] text-[var(--gold)]">Full Reading Detail</p>
+          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-[var(--foreground)] sm:text-5xl">
             {detail.title}
           </h1>
-          <p className="mt-4 text-lg text-zinc-600">
+          <p className="mt-4 text-lg text-[var(--muted)]">
             {detail.authors.length > 0 ? detail.authors.join(" / ") : "作者信息暂缺"}
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3 text-sm">
-            <span className="rounded-full border border-zinc-200 bg-zinc-50 px-4 py-2 text-zinc-700">
+            <span className="rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-2 text-[var(--muted)]">
               首次出版：{detail.firstPublishDate ?? "未知"}
             </span>
             <span className="rounded-full border border-zinc-200 bg-zinc-50 px-4 py-2 text-zinc-700">
@@ -177,9 +177,9 @@ export default function ReadingDetail({ workId }: Props) {
             </span>
           </div>
 
-          <div className="mt-8 rounded-[24px] border border-emerald-100 bg-emerald-50 p-6">
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-700">完整简介</p>
-            <div className="mt-4 space-y-4 text-[15px] leading-8 text-zinc-700">
+          <div className="mt-8 rounded-[24px] border border-[rgba(214,179,106,0.14)] bg-[rgba(214,179,106,0.06)] p-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">完整简介</p>
+            <div className="mt-4 space-y-4 text-[15px] leading-8 text-[rgba(245,245,242,0.82)]">
               {detail.description ? (
                 detail.description
                   .split(/\n{2,}/)
@@ -194,14 +194,14 @@ export default function ReadingDetail({ workId }: Props) {
       </section>
 
       {detail.gutenberg ? (
-        <section className="rounded-[28px] border border-emerald-200 bg-[linear-gradient(180deg,_#f0fdf4_0%,_#ffffff_100%)] p-6 shadow-sm">
+        <section className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.02)_100%)] p-6 shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-700">Public Domain Full Text</p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-950">
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">Public Domain Full Text</p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">
                 可直接阅读的全文
               </h2>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-zinc-600">
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--muted)]">
                 这部分全文来自 Project Gutenberg 公版文本，通过 Gutendex 检索匹配后接入。适用于已经进入公版领域的作品。
               </p>
             </div>
@@ -210,7 +210,7 @@ export default function ReadingDetail({ workId }: Props) {
                 href={detail.gutenberg.sourceUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex h-11 items-center justify-center rounded-2xl bg-emerald-600 px-5 text-sm font-medium text-white transition hover:bg-emerald-700"
+                className="inline-flex h-11 items-center justify-center rounded-2xl bg-[var(--gold)] px-5 text-sm font-medium text-black transition hover:brightness-105"
               >
                 打开 Gutenberg 页面
               </a>
@@ -218,7 +218,7 @@ export default function ReadingDetail({ workId }: Props) {
                 href={detail.gutenberg.textUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex h-11 items-center justify-center rounded-2xl border border-zinc-200 bg-white px-5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50"
+                className="inline-flex h-11 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)]"
               >
                 打开原始全文
               </a>
@@ -226,7 +226,7 @@ export default function ReadingDetail({ workId }: Props) {
           </div>
 
           <div className="mt-5 flex flex-wrap gap-3 text-sm">
-            <span className="rounded-full border border-emerald-200 bg-white px-4 py-2 text-zinc-700">
+            <span className="rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-2 text-[var(--muted)]">
               Gutenberg ID：{detail.gutenberg.id}
             </span>
             <span className="rounded-full border border-emerald-200 bg-white px-4 py-2 text-zinc-700">
@@ -234,8 +234,8 @@ export default function ReadingDetail({ workId }: Props) {
             </span>
           </div>
 
-          <div className="mt-6 max-h-[70vh] overflow-y-auto rounded-[24px] border border-zinc-200 bg-white p-6">
-            <div className="space-y-5 text-[15px] leading-8 text-zinc-700">
+          <div className="mt-6 max-h-[70vh] overflow-y-auto rounded-[24px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-6">
+            <div className="space-y-5 text-[15px] leading-8 text-[rgba(245,245,242,0.82)]">
               {detail.gutenberg.fullText
                 .split(/\n{2,}/)
                 .filter((paragraph) => paragraph.trim().length > 0)
@@ -248,22 +248,22 @@ export default function ReadingDetail({ workId }: Props) {
           </div>
         </section>
       ) : (
-        <section className="rounded-[28px] border border-zinc-200 bg-zinc-50 p-6 text-zinc-600 shadow-sm">
+        <section className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-6 text-[var(--muted)] shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
           当前没有匹配到可直接展示的公版全文，所以这里先展示完整资料页。如果后续接入更多公版全文来源，这里可以继续扩展。
         </section>
       )}
 
       {detail.excerpts.length > 0 ? (
-        <section className="rounded-[28px] border border-zinc-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-500">摘录片段</p>
+        <section className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.02)_100%)] p-6 shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">摘录片段</p>
           <div className="mt-5 grid gap-4">
             {detail.excerpts.map((excerpt, index) => (
               <blockquote
                 key={`${detail.workId}-excerpt-${index}`}
-                className="rounded-[22px] border border-zinc-200 bg-zinc-50 p-5 text-[15px] leading-8 text-zinc-700"
+                className="rounded-[22px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5 text-[15px] leading-8 text-[rgba(245,245,242,0.82)]"
               >
                 <p>{excerpt.text}</p>
-                {excerpt.comment ? <footer className="mt-3 text-sm text-zinc-500">{excerpt.comment}</footer> : null}
+                {excerpt.comment ? <footer className="mt-3 text-sm text-[var(--muted)]">{excerpt.comment}</footer> : null}
               </blockquote>
             ))}
           </div>
@@ -271,27 +271,27 @@ export default function ReadingDetail({ workId }: Props) {
       ) : null}
 
       <section className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-[28px] border border-zinc-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-500">主题标签</p>
+        <div className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.02)_100%)] p-6 shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">主题标签</p>
           <div className="mt-5 flex flex-wrap gap-2">
             {detail.subjects.length > 0 ? (
               detail.subjects.map((subject) => (
                 <span
                   key={`${detail.workId}-subject-${subject}`}
-                  className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-sm text-zinc-700"
+                  className="rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3 py-1 text-sm text-[var(--muted)]"
                 >
                   {subject}
                 </span>
               ))
             ) : (
-              <p className="text-zinc-600">暂无主题标签。</p>
+              <p className="text-[var(--muted)]">暂无主题标签。</p>
             )}
           </div>
         </div>
 
-        <div className="rounded-[28px] border border-zinc-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-500">相关人物 / 地点 / 时间</p>
-          <div className="mt-5 space-y-4 text-sm leading-7 text-zinc-700">
+        <div className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.02)_100%)] p-6 shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">相关人物 / 地点 / 时间</p>
+          <div className="mt-5 space-y-4 text-sm leading-7 text-[rgba(245,245,242,0.82)]">
             <p>人物：{detail.people.length > 0 ? detail.people.join("、") : "暂无"}</p>
             <p>地点：{detail.places.length > 0 ? detail.places.join("、") : "暂无"}</p>
             <p>时间：{detail.times.length > 0 ? detail.times.join("、") : "暂无"}</p>
@@ -300,42 +300,42 @@ export default function ReadingDetail({ workId }: Props) {
       </section>
 
       {detail.editions.length > 0 ? (
-        <section className="rounded-[28px] border border-zinc-200 bg-white p-6 shadow-sm">
+        <section className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.02)_100%)] p-6 shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-500">版本信息</p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-950">可用版本与延伸阅读</h2>
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">版本信息</p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">可用版本与延伸阅读</h2>
             </div>
-            <p className="text-sm text-zinc-500">优先展示前 8 个检索到的版本。</p>
+            <p className="text-sm text-[var(--muted)]">优先展示前 8 个检索到的版本。</p>
           </div>
 
           <div className="mt-6 grid gap-4">
             {detail.editions.map((edition) => (
               <article
                 key={edition.key}
-                className="rounded-[22px] border border-zinc-200 bg-zinc-50 p-5"
+                className="rounded-[22px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5"
               >
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-zinc-950">{edition.title}</h3>
-                    <p className="mt-2 text-sm text-zinc-600">
+                    <h3 className="text-lg font-semibold text-[var(--foreground)]">{edition.title}</h3>
+                    <p className="mt-2 text-sm text-[var(--muted)]">
                       出版时间：{edition.publishDate} {edition.publishers.length > 0 ? `· 出版社：${edition.publishers.join(" / ")}` : ""}
                     </p>
-                    {edition.pages ? <p className="mt-2 text-sm text-zinc-600">页数：{edition.pages}</p> : null}
+                    {edition.pages ? <p className="mt-2 text-sm text-[var(--muted)]">页数：{edition.pages}</p> : null}
                   </div>
                   {edition.archiveUrl ? (
                     <a
                       href={edition.archiveUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex h-10 items-center justify-center rounded-2xl border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100"
+                      className="inline-flex h-10 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)]"
                     >
                       查看版本
                     </a>
                   ) : null}
                 </div>
                 {edition.description ? (
-                  <p className="mt-4 text-sm leading-7 text-zinc-700">{edition.description}</p>
+                  <p className="mt-4 text-sm leading-7 text-[rgba(245,245,242,0.82)]">{edition.description}</p>
                 ) : null}
               </article>
             ))}
@@ -344,8 +344,8 @@ export default function ReadingDetail({ workId }: Props) {
       ) : null}
 
       {detail.links.length > 0 ? (
-        <section className="rounded-[28px] border border-zinc-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-zinc-500">相关链接</p>
+        <section className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.02)_100%)] p-6 shadow-[0_18px_40px_rgba(0,0,0,0.28)]">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--gold)]">相关链接</p>
           <div className="mt-5 flex flex-wrap gap-3">
             {detail.links.map((link) => (
               <a
@@ -353,7 +353,7 @@ export default function ReadingDetail({ workId }: Props) {
                 href={link.url}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex h-11 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 px-4 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100"
+                className="inline-flex h-11 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)]"
               >
                 {link.title}
               </a>

@@ -115,13 +115,13 @@ export default function ReadingLibrary() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-[28px] border border-zinc-200 bg-[linear-gradient(180deg,_rgba(255,255,255,0.96)_0%,_rgba(236,253,245,0.88)_100%)] p-6 shadow-sm sm:p-8">
+      <section className="premium-panel rounded-[28px] p-6 sm:p-8">
         <div className="max-w-3xl">
-          <p className="text-sm font-medium uppercase tracking-[0.28em] text-emerald-700">Reading Search</p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">
+          <p className="text-sm font-medium uppercase tracking-[0.28em] text-[var(--gold)]">Reading Search</p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--foreground)] sm:text-4xl">
             搜索你想阅读的名著
           </h2>
-          <p className="mt-4 text-sm leading-7 text-zinc-600 sm:text-base">
+          <p className="mt-4 text-sm leading-7 text-[var(--muted)] sm:text-base">
             通过 Open Library 的公开数据搜索书籍，结果会展示封面、作者、出版时间以及作品简介，适合做名著阅读入口和资料索引。
           </p>
         </div>
@@ -131,12 +131,12 @@ export default function ReadingLibrary() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="搜索书名、作者或关键词"
-            className="h-13 flex-1 rounded-2xl border border-emerald-200 bg-white px-5 text-base text-zinc-900 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+            className="h-13 flex-1 rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(0,0,0,0.18)] px-5 text-base text-[var(--foreground)] outline-none transition placeholder:text-[var(--muted)] focus:border-[rgba(214,179,106,0.4)] focus:ring-4 focus:ring-[rgba(214,179,106,0.12)]"
           />
           <button
             type="submit"
             disabled={loading}
-            className="inline-flex h-13 items-center justify-center rounded-2xl bg-emerald-600 px-6 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-emerald-300"
+            className="inline-flex h-13 items-center justify-center rounded-2xl bg-[var(--gold)] px-6 text-sm font-semibold text-black transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? "搜索中..." : "搜索书籍"}
           </button>
@@ -151,7 +151,7 @@ export default function ReadingLibrary() {
                 setQuery(keyword);
                 void performSearch(keyword);
               }}
-              className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+              className="rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-2 text-sm font-medium text-[var(--muted)] transition hover:border-[rgba(214,179,106,0.26)] hover:text-[var(--gold)]"
             >
               {keyword}
             </button>
@@ -159,15 +159,15 @@ export default function ReadingLibrary() {
         </div>
       </section>
 
-      <section className="rounded-[28px] border border-zinc-200 bg-white/90 p-5 shadow-[0_24px_70px_rgba(15,23,42,0.06)] sm:p-6">
-        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-zinc-200 pb-5">
+      <section className="premium-panel rounded-[28px] p-5 sm:p-6">
+        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.08)] pb-5">
           <div>
-            <p className="text-sm font-medium uppercase tracking-[0.24em] text-zinc-500">Full Text Collection</p>
-            <h3 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-950">
+            <p className="text-sm font-medium uppercase tracking-[0.24em] text-[var(--gold)]">Full Text Collection</p>
+            <h3 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">
               可匹配全文的推荐图书列表
             </h3>
           </div>
-          <p className="max-w-2xl text-sm leading-7 text-zinc-500">
+          <p className="max-w-2xl text-sm leading-7 text-[var(--muted)]">
             这些书优先选择了已经进入公版领域、并且较容易匹配到 Project Gutenberg 全文的经典作品。
           </p>
         </div>
@@ -176,25 +176,25 @@ export default function ReadingLibrary() {
           {fullTextBooks.map((book) => (
             <article
               key={book.workId}
-              className="rounded-[24px] border border-zinc-200 bg-[linear-gradient(180deg,_#ffffff_0%,_#f8fafc_100%)] p-5 shadow-sm"
+              className="rounded-[24px] border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.02)_100%)] p-5 shadow-[0_18px_40px_rgba(0,0,0,0.28)]"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-sm uppercase tracking-[0.22em] text-emerald-700">Public Domain</p>
-                  <h4 className="mt-3 text-2xl font-semibold tracking-tight text-zinc-950">{book.title}</h4>
-                  <p className="mt-2 text-sm text-zinc-600">{book.author}</p>
+                  <p className="text-sm uppercase tracking-[0.22em] text-[var(--gold)]">Public Domain</p>
+                  <h4 className="mt-3 text-2xl font-semibold tracking-tight text-[var(--foreground)]">{book.title}</h4>
+                  <p className="mt-2 text-sm text-[var(--muted)]">{book.author}</p>
                 </div>
-                <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                <span className="rounded-full border border-[rgba(214,179,106,0.18)] bg-[rgba(214,179,106,0.08)] px-3 py-1 text-xs font-semibold text-[var(--gold)]">
                   全文候选
                 </span>
               </div>
 
-              <p className="mt-4 text-sm leading-7 text-zinc-600">{book.summary}</p>
+              <p className="mt-4 text-sm leading-7 text-[var(--muted)]">{book.summary}</p>
 
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
                   href={`/reading/${book.workId}`}
-                  className="inline-flex h-11 items-center justify-center rounded-2xl bg-emerald-600 px-5 text-sm font-medium text-white transition hover:bg-emerald-700"
+                  className="inline-flex h-11 items-center justify-center rounded-2xl bg-[var(--gold)] px-5 text-sm font-medium text-black transition hover:brightness-105"
                 >
                   直接阅读
                 </Link>
@@ -204,7 +204,7 @@ export default function ReadingLibrary() {
                     setQuery(book.title);
                     void performSearch(book.title);
                   }}
-                  className="inline-flex h-11 items-center justify-center rounded-2xl border border-zinc-200 bg-white px-5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50"
+                  className="inline-flex h-11 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)]"
                 >
                   在搜索结果中查看
                 </button>
@@ -214,27 +214,27 @@ export default function ReadingLibrary() {
         </div>
       </section>
 
-      <section className="rounded-[28px] border border-zinc-200 bg-white/90 p-5 shadow-[0_24px_70px_rgba(15,23,42,0.06)] sm:p-6">
-        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-zinc-200 pb-5">
+      <section className="premium-panel rounded-[28px] p-5 sm:p-6">
+        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-[rgba(255,255,255,0.08)] pb-5">
           <div>
-            <p className="text-sm font-medium uppercase tracking-[0.24em] text-zinc-500">Search Result</p>
-            <h3 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-950">
+            <p className="text-sm font-medium uppercase tracking-[0.24em] text-[var(--gold)]">Search Result</p>
+            <h3 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">
               {searchedQuery ? `“${searchedQuery}” 的搜索结果` : "等待搜索"}
             </h3>
           </div>
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-[var(--muted)]">
             {loading ? "正在拉取数据..." : books.length > 0 ? `共展示 ${books.length} 本相关书籍` : "输入关键词开始搜索"}
           </p>
         </div>
 
         {error ? (
-          <div className="mt-5 rounded-[22px] border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
+          <div className="mt-5 rounded-[22px] border border-[rgba(214,179,106,0.18)] bg-[rgba(214,179,106,0.08)] p-4 text-sm text-[var(--gold)]">
             {error}
           </div>
         ) : null}
 
         {!error && books.length === 0 ? (
-          <div className="mt-5 rounded-[24px] border border-zinc-200 bg-zinc-50 p-8 text-zinc-600">
+          <div className="mt-5 rounded-[24px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-8 text-[var(--muted)]">
             {loading
               ? "正在搜索书籍，请稍候..."
               : "还没有搜索结果。你可以先试试上面的快捷搜索，或者输入一本想读的书。"}
@@ -246,9 +246,9 @@ export default function ReadingLibrary() {
             {books.map((book) => (
               <article
                 key={book.key}
-                className="grid gap-5 rounded-[26px] border border-zinc-200 bg-[linear-gradient(180deg,_#ffffff_0%,_#f8fafc_100%)] p-5 shadow-sm lg:grid-cols-[180px_1fr]"
+                className="grid gap-5 rounded-[26px] border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.02)_100%)] p-5 shadow-[0_18px_40px_rgba(0,0,0,0.28)] lg:grid-cols-[180px_1fr]"
               >
-                <div className="overflow-hidden rounded-[20px] border border-zinc-200 bg-zinc-100">
+                <div className="overflow-hidden rounded-[20px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)]">
                   {book.coverUrl ? (
                     <Image
                       src={book.coverUrl}
@@ -258,7 +258,7 @@ export default function ReadingLibrary() {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-full min-h-[260px] items-center justify-center bg-[linear-gradient(180deg,_#ecfdf5_0%,_#d1fae5_100%)] px-6 text-center text-sm font-medium leading-7 text-emerald-800">
+                    <div className="flex h-full min-h-[260px] items-center justify-center bg-[linear-gradient(180deg,rgba(214,179,106,0.12)_0%,rgba(255,255,255,0.03)_100%)] px-6 text-center text-sm font-medium leading-7 text-[var(--gold)]">
                       暂无封面
                     </div>
                   )}
@@ -267,19 +267,19 @@ export default function ReadingLibrary() {
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
-                      <p className="text-sm uppercase tracking-[0.24em] text-emerald-700">Classic Reading</p>
+                      <p className="text-sm uppercase tracking-[0.24em] text-[var(--gold)]">Classic Reading</p>
                       <Link
                         href={`/reading/${workIdFromKey(book.key)}`}
-                        className="mt-3 inline-block text-3xl font-semibold tracking-tight text-zinc-950 transition hover:text-emerald-700"
+                        className="mt-3 inline-block text-3xl font-semibold tracking-tight text-[var(--foreground)] transition hover:text-[var(--gold)]"
                       >
                         {book.title}
                       </Link>
-                      <p className="mt-3 text-base text-zinc-600">{book.author}</p>
+                      <p className="mt-3 text-base text-[var(--muted)]">{book.author}</p>
                     </div>
                     <div className="flex flex-wrap gap-3">
                       <Link
                         href={`/reading/${workIdFromKey(book.key)}`}
-                        className="inline-flex h-11 items-center justify-center rounded-2xl bg-emerald-600 px-5 text-sm font-medium text-white transition hover:bg-emerald-700"
+                        className="inline-flex h-11 items-center justify-center rounded-2xl bg-[var(--gold)] px-5 text-sm font-medium text-black transition hover:brightness-105"
                       >
                         查看完整内容
                       </Link>
@@ -287,7 +287,7 @@ export default function ReadingLibrary() {
                         href={book.sourceUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex h-11 items-center justify-center rounded-2xl border border-zinc-200 bg-white px-5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50"
+                        className="inline-flex h-11 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)]"
                       >
                         查看来源
                       </a>
@@ -295,7 +295,7 @@ export default function ReadingLibrary() {
                   </div>
 
                   <div className="mt-5 flex flex-wrap gap-3 text-sm">
-                    <span className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-zinc-700">
+                    <span className="rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-2 text-[var(--muted)]">
                       首次出版：{book.firstPublishYear ?? "未知"}
                     </span>
                     <span className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-zinc-700">
@@ -309,9 +309,9 @@ export default function ReadingLibrary() {
                     </span>
                   </div>
 
-                  <div className="mt-6 rounded-[22px] border border-emerald-100 bg-emerald-50 p-5">
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">内容简介</p>
-                    <p className="mt-3 text-[15px] leading-8 text-zinc-700">{trimSummary(book.summary)}</p>
+                  <div className="mt-6 rounded-[22px] border border-[rgba(214,179,106,0.14)] bg-[rgba(214,179,106,0.06)] p-5">
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--gold)]">内容简介</p>
+                    <p className="mt-3 text-[15px] leading-8 text-[rgba(245,245,242,0.82)]">{trimSummary(book.summary)}</p>
                   </div>
 
                   {book.subjects.length > 0 ? (
@@ -319,7 +319,7 @@ export default function ReadingLibrary() {
                       {book.subjects.map((subject) => (
                         <span
                           key={`${book.key}-${subject}`}
-                          className="rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs font-medium text-zinc-700"
+                          className="rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3 py-1 text-xs font-medium text-[var(--muted)]"
                         >
                           {subject}
                         </span>

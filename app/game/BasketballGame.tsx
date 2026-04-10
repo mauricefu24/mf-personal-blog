@@ -230,12 +230,12 @@ export default function BasketballGame() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
-      <div className="rounded-[28px] border border-sky-200/70 bg-white/90 p-5 shadow-sm sm:p-6">
+      <div className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5 shadow-[0_18px_40px_rgba(0,0,0,0.28)] sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-medium uppercase tracking-[0.28em] text-sky-700">Basketball</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950">投篮小游戏</h2>
-            <p className="mt-3 max-w-md text-sm leading-7 text-zinc-600">
+            <p className="text-sm font-medium uppercase tracking-[0.28em] text-[var(--gold)]">Basketball</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--foreground)]">投篮小游戏</h2>
+            <p className="mt-3 max-w-md text-sm leading-7 text-[var(--muted)]">
               调整角度和力度，把球投进会左右移动的篮筐。方向键可以微调，空格键也能直接出手。
             </p>
           </div>
@@ -244,14 +244,14 @@ export default function BasketballGame() {
             <button
               type="button"
               onClick={shoot}
-              className="inline-flex h-12 items-center justify-center rounded-2xl bg-sky-600 px-5 text-sm font-semibold text-white transition hover:bg-sky-700"
+              className="inline-flex h-12 items-center justify-center rounded-2xl bg-[var(--gold)] px-5 text-sm font-semibold text-black transition hover:brightness-105"
             >
               出手投篮
             </button>
             <button
               type="button"
               onClick={resetRound}
-              className="inline-flex h-12 items-center justify-center rounded-2xl border border-zinc-200 bg-white px-5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
+              className="inline-flex h-12 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-5 text-sm font-semibold text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)]"
             >
               重置数据
             </button>
@@ -259,28 +259,28 @@ export default function BasketballGame() {
         </div>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-4">
-          <div className="rounded-[20px] border border-zinc-200 bg-sky-50 px-4 py-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-sky-700">命中</p>
-            <p className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950">{score}</p>
+          <div className="rounded-[20px] border border-[rgba(214,179,106,0.16)] bg-[rgba(214,179,106,0.08)] px-4 py-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-[var(--gold)]">命中</p>
+            <p className="mt-3 text-3xl font-semibold tracking-tight text-[var(--foreground)]">{score}</p>
           </div>
-          <div className="rounded-[20px] border border-zinc-200 bg-white px-4 py-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-zinc-500">出手</p>
-            <p className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950">{shots}</p>
+          <div className="rounded-[20px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-[var(--muted)]">出手</p>
+            <p className="mt-3 text-3xl font-semibold tracking-tight text-[var(--foreground)]">{shots}</p>
           </div>
-          <div className="rounded-[20px] border border-zinc-200 bg-white px-4 py-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-zinc-500">命中率</p>
-            <p className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950">{accuracy}%</p>
+          <div className="rounded-[20px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-[var(--muted)]">命中率</p>
+            <p className="mt-3 text-3xl font-semibold tracking-tight text-[var(--foreground)]">{accuracy}%</p>
           </div>
-          <div className="rounded-[20px] border border-zinc-200 bg-white px-4 py-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-zinc-500">连中</p>
-            <p className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950">{streak}</p>
+          <div className="rounded-[20px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-[var(--muted)]">连中</p>
+            <p className="mt-3 text-3xl font-semibold tracking-tight text-[var(--foreground)]">{streak}</p>
           </div>
         </div>
 
-        <div className="mt-6 rounded-[24px] border border-sky-100 bg-[linear-gradient(180deg,_#eff6ff_0%,_#ffffff_100%)] p-5">
+        <div className="mt-6 rounded-[24px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5">
           <div className="grid gap-5">
             <label className="block">
-              <div className="flex items-center justify-between text-sm font-medium text-zinc-700">
+              <div className="flex items-center justify-between text-sm font-medium text-[rgba(245,245,242,0.84)]">
                 <span>投篮角度</span>
                 <span>{angle}°</span>
               </div>
@@ -290,12 +290,12 @@ export default function BasketballGame() {
                 max="80"
                 value={angle}
                 onChange={(event) => setAngle(Number(event.target.value))}
-                className="mt-3 w-full accent-sky-600"
+                className="mt-3 w-full accent-[var(--gold)]"
               />
             </label>
 
             <label className="block">
-              <div className="flex items-center justify-between text-sm font-medium text-zinc-700">
+              <div className="flex items-center justify-between text-sm font-medium text-[rgba(245,245,242,0.84)]">
                 <span>投篮力度</span>
                 <span>{power}</span>
               </div>
@@ -305,15 +305,15 @@ export default function BasketballGame() {
                 max="22"
                 value={power}
                 onChange={(event) => setPower(Number(event.target.value))}
-                className="mt-3 w-full accent-sky-600"
+                className="mt-3 w-full accent-[var(--gold)]"
               />
             </label>
           </div>
         </div>
 
-        <div className="mt-6 rounded-[24px] border border-zinc-200 bg-zinc-50 p-5">
-          <p className="text-sm font-semibold text-zinc-900">玩法提示</p>
-          <div className="mt-4 space-y-3 text-sm leading-6 text-zinc-600">
+        <div className="mt-6 rounded-[24px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-5">
+          <p className="text-sm font-semibold text-[var(--foreground)]">玩法提示</p>
+          <div className="mt-4 space-y-3 text-sm leading-6 text-[var(--muted)]">
             <p>角度高一点更稳，力度大一点更容易穿过移动篮筐。</p>
             <p>上/下方向键调角度，左/右方向键调力度，空格直接投篮。</p>
             <p>最高命中会保存在本地，刷新页面后还在。</p>
@@ -321,7 +321,7 @@ export default function BasketballGame() {
         </div>
       </div>
 
-      <div className="rounded-[28px] border border-zinc-200 bg-[linear-gradient(180deg,_rgba(255,255,255,0.95)_0%,_rgba(239,246,255,0.95)_100%)] p-4 shadow-[0_24px_60px_rgba(14,116,144,0.08)] sm:p-5">
+      <div className="rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.28)] sm:p-5">
         <div className="relative aspect-[10/8] overflow-hidden rounded-[24px] border border-white/80 bg-[linear-gradient(180deg,_#e0f2fe_0%,_#f8fafc_35%,_#fde68a_36%,_#fdba74_100%)]">
           <div className="absolute inset-x-0 bottom-0 h-[18%] bg-[linear-gradient(180deg,_#fb923c_0%,_#ea580c_100%)]" />
           <div className="absolute bottom-[18%] left-[8%] h-[12%] w-[5%] rounded-t-full bg-zinc-900" />
@@ -384,9 +384,9 @@ export default function BasketballGame() {
           />
         </div>
 
-        <div className="mt-4 rounded-[20px] border border-zinc-200 bg-white/90 px-4 py-4 text-sm text-zinc-600">
+        <div className="mt-4 rounded-[20px] border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-4 text-sm text-[var(--muted)]">
           {status}
-          <span className="ml-2 text-zinc-400">最高命中 {bestScore}</span>
+          <span className="ml-2 text-[rgba(245,245,242,0.48)]">最高命中 {bestScore}</span>
         </div>
       </div>
     </div>
