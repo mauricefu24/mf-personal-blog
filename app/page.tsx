@@ -170,12 +170,12 @@ type Module = (typeof featuredModules)[number] | (typeof exploreModules)[number]
 
 function HeroIllustration() {
   return (
-    <div className="relative overflow-hidden rounded-[32px] border border-zinc-200/80 bg-transparent p-5 shadow-[0_24px_60px_rgba(15,23,42,0.08)] sm:p-6">
+    <div className="premium-panel relative mx-auto w-full max-w-[31rem] overflow-hidden rounded-[30px] p-4 sm:p-5">
       <svg
         viewBox="0 0 560 420"
-        className="relative h-[320px] w-full text-zinc-900"
+        className="relative h-[280px] w-full sm:h-[310px] lg:h-[340px]"
         role="img"
-        aria-label="展示月亮从新月到满月再回到新月的月相变化动画"
+        aria-label="一个正在缓慢旋转的月球动画"
       >
         <defs>
           <radialGradient id="phaseGlow" cx="50%" cy="50%" r="50%">
@@ -264,28 +264,27 @@ function HeroIllustration() {
         </g>
 
         <g clipPath="url(#moonClip)">
-          <g opacity="0.42">
-            <circle cx="246" cy="180" r="8" fill="#d7dee9" />
-            <circle cx="316" cy="238" r="12" fill="#d3dbe6" />
-            <circle cx="322" cy="166" r="5" fill="#d7dee9" />
-            <circle cx="254" cy="242" r="6" fill="#dfe5ee" />
-          </g>
+          <g>
+            <animateTransform
+              attributeName="transform"
+              type="translate"
+              values="0 0;-54 0;0 0"
+              dur="18s"
+              repeatCount="indefinite"
+            />
+            <g opacity="0.44">
+              <circle cx="246" cy="180" r="8" fill="#d7dee9" />
+              <circle cx="316" cy="238" r="12" fill="#d3dbe6" />
+              <circle cx="322" cy="166" r="5" fill="#d7dee9" />
+              <circle cx="254" cy="242" r="6" fill="#dfe5ee" />
+              <circle cx="356" cy="204" r="11" fill="#d6dde7" />
+              <circle cx="202" cy="214" r="9" fill="#dde4ed" />
+            </g>
 
-          <g filter="url(#softBlur)">
-            <ellipse cx="384" cy="210" rx="116" ry="102" fill="url(#umbra)">
-              <animate
-                attributeName="cx"
-                values="418;374;332;280;228;186;142;186;228;280;332;374;418"
-                dur="24s"
-                repeatCount="indefinite"
-              />
-              <animate
-                attributeName="rx"
-                values="122;110;86;18;86;110;122;110;86;18;86;110;122"
-                dur="24s"
-                repeatCount="indefinite"
-              />
-            </ellipse>
+            <g opacity="0.16">
+              <path d="M170 174C220 142 340 146 390 186" fill="none" stroke="#94a3b8" strokeWidth="14" strokeLinecap="round" />
+              <path d="M186 252C234 230 318 228 382 264" fill="none" stroke="#cbd5e1" strokeWidth="10" strokeLinecap="round" />
+            </g>
           </g>
 
           <ellipse cx="278" cy="210" rx="92" ry="90" fill="#ffffff" fillOpacity="0.08">
@@ -296,6 +295,17 @@ function HeroIllustration() {
               repeatCount="indefinite"
             />
           </ellipse>
+
+          <g filter="url(#softBlur)">
+            <ellipse cx="360" cy="210" rx="98" ry="100" fill="url(#umbra)" opacity="0.22">
+              <animate
+                attributeName="cx"
+                values="350;366;350"
+                dur="12s"
+                repeatCount="indefinite"
+              />
+            </ellipse>
+          </g>
         </g>
 
         <g opacity="0.55">
@@ -328,9 +338,9 @@ function SectionHeading({
 }) {
   return (
     <div className="max-w-3xl">
-      <p className="text-xs font-semibold uppercase tracking-[0.34em] text-zinc-500">{eyebrow}</p>
-      <h2 className="mt-3 text-2xl font-semibold tracking-tight text-zinc-950 sm:text-3xl">{title}</h2>
-      <p className="mt-3 max-w-2xl text-sm leading-7 text-zinc-600 sm:text-base">{description}</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.34em] text-[var(--gold)]">{eyebrow}</p>
+      <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[var(--foreground)] sm:text-3xl">{title}</h2>
+      <p className="mt-3 max-w-2xl text-sm leading-7 text-[var(--muted)] sm:text-base">{description}</p>
     </div>
   );
 }
@@ -339,13 +349,13 @@ function ModuleCard({ module, featured = false }: { module: Module; featured?: b
   return (
     <Link
       href={module.href}
-      className={`group relative overflow-hidden rounded-[30px] border bg-white/92 p-6 transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_rgba(15,23,42,0.12)] sm:p-7 ${
-        featured ? "shadow-[0_22px_50px_rgba(15,23,42,0.08)]" : "shadow-[0_18px_40px_rgba(15,23,42,0.06)]"
-      } ${module.tone.border}`}
+      className={`group premium-panel relative overflow-hidden rounded-[30px] p-6 transition duration-300 hover:-translate-y-1 hover:border-[rgba(214,179,106,0.28)] hover:shadow-[0_30px_70px_rgba(0,0,0,0.45)] sm:p-7 ${
+        featured ? "min-h-[22rem]" : ""
+      }`}
     >
       {"glow" in module.tone ? (
         <div
-          className={`pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br blur-3xl ${module.tone.glow}`}
+          className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[radial-gradient(circle,_rgba(214,179,106,0.18),_transparent_68%)] blur-3xl"
           aria-hidden="true"
         />
       ) : null}
@@ -353,33 +363,33 @@ function ModuleCard({ module, featured = false }: { module: Module; featured?: b
       <div className="relative flex h-full flex-col">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-zinc-500">{module.eyebrow}</p>
-            <h3 className={`mt-4 font-semibold tracking-tight text-zinc-950 ${featured ? "text-3xl" : "text-2xl"}`}>
+            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--muted)]">{module.eyebrow}</p>
+            <h3 className={`mt-4 font-semibold tracking-tight text-[var(--foreground)] ${featured ? "text-3xl" : "text-2xl"}`}>
               {module.title}
             </h3>
           </div>
           <span
-            className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border ${module.tone.icon}`}
+            className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[rgba(214,179,106,0.18)] bg-[rgba(214,179,106,0.08)] text-[var(--gold)]"
             aria-hidden="true"
           >
             <module.icon />
           </span>
         </div>
 
-        <p className={`mt-4 text-zinc-600 ${featured ? "max-w-xl text-base leading-8" : "text-[15px] leading-7"}`}>
+        <p className={`mt-4 text-[rgba(245,245,242,0.74)] ${featured ? "max-w-xl text-base leading-8" : "text-[15px] leading-7"}`}>
           {module.description}
         </p>
 
         <div className="mt-6 flex flex-wrap gap-2">
           {module.tags.map((tag) => (
-            <span key={tag} className={`rounded-full border px-3 py-1.5 text-sm text-zinc-600 ${module.tone.panel} ${module.tone.border}`}>
+            <span key={tag} className="rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3 py-1.5 text-sm text-[var(--muted)]">
               {tag}
             </span>
           ))}
         </div>
 
-        <div className="mt-8 flex justify-end border-t border-zinc-100 pt-5">
-          <span className="inline-flex items-center rounded-full border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 transition group-hover:border-zinc-300 group-hover:bg-zinc-50">
+        <div className="mt-8 flex justify-end border-t border-[rgba(255,255,255,0.08)] pt-5">
+          <span className="inline-flex items-center rounded-full border border-[rgba(214,179,106,0.2)] bg-[rgba(255,255,255,0.02)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition group-hover:border-[rgba(214,179,106,0.34)] group-hover:text-[var(--gold)]">
             {module.cta}
           </span>
         </div>
@@ -390,43 +400,43 @@ function ModuleCard({ module, featured = false }: { module: Module; featured?: b
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[linear-gradient(180deg,#f8fafc_0%,#eef2ff_26%,#ffffff_100%)]">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_top_left,rgba(125,211,252,0.20),transparent_34%),radial-gradient(circle_at_top_right,rgba(191,219,254,0.16),transparent_28%),radial-gradient(circle_at_center,rgba(196,181,253,0.10),transparent_38%)]" />
+    <main className="min-h-screen overflow-hidden premium-shell">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_top_left,rgba(214,179,106,0.12),transparent_28%),radial-gradient(circle_at_top_right,rgba(255,255,255,0.05),transparent_24%),radial-gradient(circle_at_center,rgba(214,179,106,0.05),transparent_36%)]" />
 
       <section className="relative mx-auto max-w-7xl px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
-        <div className="rounded-[36px] border border-white/70 bg-white/76 p-6 shadow-[0_34px_100px_rgba(15,23,42,0.08)] backdrop-blur sm:p-8 lg:p-10">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.02fr)_minmax(360px,0.98fr)] lg:items-center">
+        <div className="premium-panel rounded-[36px] p-6 sm:p-8 lg:p-10">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.12fr)_minmax(320px,0.88fr)] lg:items-center">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.34em] text-sky-700">MODULE GATEWAY</p>
-              <h1 className="mt-5 whitespace-nowrap text-[2rem] font-semibold italic tracking-[-0.04em] text-zinc-950 sm:text-[2.75rem] lg:text-[3.35rem]">
+              <p className="text-sm font-semibold uppercase tracking-[0.34em] text-[var(--gold)]">MODULE GATEWAY</p>
+              <h1 className="mt-5 whitespace-nowrap text-[2rem] font-semibold italic tracking-[-0.04em] text-[var(--foreground)] sm:text-[2.75rem] lg:text-[3.35rem]">
                 Maurice Content Portal
               </h1>
-              <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-600 sm:text-lg">
+              <p className="mt-6 max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg">
                 这里是 Maurice 的内容首页。你可以从这里进入个人博客、名著阅读、工作方法、游戏实验、做菜记录和旅行内容，让不同主题拥有清晰归属，也让每一次浏览都有独立节奏。
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   href="/blog"
-                  className="inline-flex items-center rounded-full bg-zinc-950 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-800"
+                  className="inline-flex items-center rounded-full bg-[var(--gold)] px-5 py-3 text-sm font-medium text-black transition hover:brightness-105"
                 >
                   先看个人博客
                 </Link>
                 <a
                   href="#all-modules"
-                  className="inline-flex items-center rounded-full border border-zinc-200 bg-white px-5 py-3 text-sm font-medium text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-50"
+                  className="inline-flex items-center rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] px-5 py-3 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.26)] hover:text-[var(--gold)]"
                 >
                   浏览全部模块
                 </a>
               </div>
 
               <div className="mt-12">
-                <div className="flex items-end justify-between gap-6 border-b border-zinc-200/80 pb-4">
+                <div className="flex items-end justify-between gap-6 border-b border-[rgba(255,255,255,0.08)] pb-4">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.34em] text-zinc-500">OVERVIEW</p>
-                    <h2 className="mt-2 text-xl font-semibold tracking-tight text-zinc-950 sm:text-2xl">首页概览</h2>
+                    <p className="text-xs font-semibold uppercase tracking-[0.34em] text-[var(--gold)]">OVERVIEW</p>
+                    <h2 className="mt-2 text-xl font-semibold tracking-tight text-[var(--foreground)] sm:text-2xl">首页概览</h2>
                   </div>
-                  <p className="max-w-md text-right text-sm leading-6 text-zinc-500">
+                  <p className="max-w-md text-right text-sm leading-6 text-[var(--muted)]">
                     六个模块被拆分为三条核心内容线与三类生活兴趣线。
                   </p>
                 </div>
@@ -435,10 +445,10 @@ export default function HomePage() {
                   {overviewStats.map((item) => (
                     <div
                       key={item.label}
-                      className="rounded-[24px] border border-zinc-200/80 bg-white/85 px-5 py-5 shadow-[0_14px_36px_rgba(15,23,42,0.05)]"
+                      className="rounded-[24px] border border-[rgba(214,179,106,0.16)] bg-[linear-gradient(180deg,_rgba(255,255,255,0.04)_0%,_rgba(255,255,255,0.02)_100%)] px-5 py-5"
                     >
-                      <p className="text-3xl font-semibold tracking-tight text-zinc-950">{item.value}</p>
-                      <p className="mt-1 text-sm text-zinc-500">{item.label}</p>
+                      <p className="text-3xl font-semibold tracking-tight text-[var(--foreground)]">{item.value}</p>
+                      <p className="mt-1 text-sm text-[var(--muted)]">{item.label}</p>
                     </div>
                   ))}
                 </div>
@@ -448,7 +458,7 @@ export default function HomePage() {
                 {moduleLabels.map((label) => (
                   <span
                     key={label}
-                    className="rounded-full border border-zinc-200/80 bg-zinc-50/90 px-3 py-1.5 text-sm text-zinc-600"
+                    className="rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3 py-1.5 text-sm text-[var(--muted)]"
                   >
                     {label}
                   </span>

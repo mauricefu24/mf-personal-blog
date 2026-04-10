@@ -88,7 +88,7 @@ export function parseArticleContent(content: string): ContentBlock[] {
     if (paragraphLines.length > 0) {
       blocks.push({
         type: "paragraph",
-        text: paragraphLines.join(" "),
+        text: paragraphLines.join("\n"),
       });
       continue;
     }

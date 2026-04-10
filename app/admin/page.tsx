@@ -12,9 +12,9 @@ export default async function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)]">
+    <main className="min-h-screen premium-shell">
       <div className="mx-auto max-w-7xl px-6 py-10">
-      <AdminView />
+        <AdminView />
       </div>
     </main>
   );

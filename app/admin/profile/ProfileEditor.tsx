@@ -170,110 +170,110 @@ export default function ProfileEditor() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col gap-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+      <div className="premium-panel flex flex-col gap-4 rounded-3xl p-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold text-zinc-950">关于我设置</h1>
-          <p className="mt-2 text-zinc-600">在这里编辑首页的关于我模块内容、技能标签和跳转按钮。</p>
+          <h1 className="text-3xl font-semibold text-[var(--foreground)]">关于我设置</h1>
+          <p className="mt-2 text-[var(--muted)]">在这里编辑首页的关于我模块内容、技能标签和跳转按钮。</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link
             href="/admin"
-            className="inline-flex h-12 items-center justify-center rounded-2xl border border-zinc-200 px-5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50"
+            className="inline-flex h-12 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] px-5 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.22)] hover:text-[var(--gold)]"
           >
             返回文章管理
           </Link>
           <Link
             href="/"
-            className="inline-flex h-12 items-center justify-center rounded-2xl bg-sky-600 px-5 text-sm font-medium text-white transition hover:bg-sky-700"
+            className="inline-flex h-12 items-center justify-center rounded-2xl bg-[var(--gold)] px-5 text-sm font-medium text-black transition hover:brightness-105"
           >
             查看首页
           </Link>
         </div>
       </div>
 
-      {error ? <div className="rounded-3xl border border-rose-200 bg-rose-50 p-4 text-rose-700">{error}</div> : null}
-      {success ? <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-700">{success}</div> : null}
+      {error ? <div className="rounded-3xl border border-[rgba(214,179,106,0.18)] bg-[rgba(214,179,106,0.08)] p-4 text-[var(--gold)]">{error}</div> : null}
+      {success ? <div className="rounded-3xl border border-[rgba(214,179,106,0.18)] bg-[rgba(255,255,255,0.03)] p-4 text-[var(--foreground)]">{success}</div> : null}
 
       <section className="grid gap-8 xl:grid-cols-[1.1fr_0.9fr]">
-        <form onSubmit={handleSubmit} className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
+        <form onSubmit={handleSubmit} className="premium-panel rounded-3xl p-6">
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-zinc-950">模块内容</h2>
-            <p className="mt-2 text-sm text-zinc-600">这些内容会直接展示在首页“关于我”模块中。</p>
+            <h2 className="text-xl font-semibold text-[var(--foreground)]">模块内容</h2>
+            <p className="mt-2 text-sm text-[var(--muted)]">这些内容会直接展示在首页“关于我”模块中。</p>
           </div>
 
           {loading ? (
-            <p className="text-zinc-600">加载中...</p>
+            <p className="text-[var(--muted)]">加载中...</p>
           ) : (
             <div className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block">
-                  <span className="text-sm text-zinc-600">姓名</span>
+                  <span className="text-sm text-[var(--muted)]">姓名</span>
                   <input
                     value={form.name}
                     onChange={(event) => setForm({ ...form, name: event.target.value })}
-                    className="mt-2 w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-base outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                    className="mt-2 w-full rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[rgba(214,179,106,0.38)] focus:ring-2 focus:ring-[rgba(214,179,106,0.12)]"
                     required
                   />
                 </label>
                 <label className="block">
-                  <span className="text-sm text-zinc-600">身份标题</span>
+                  <span className="text-sm text-[var(--muted)]">身份标题</span>
                   <input
                     value={form.title}
                     onChange={(event) => setForm({ ...form, title: event.target.value })}
-                    className="mt-2 w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-base outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                    className="mt-2 w-full rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[rgba(214,179,106,0.38)] focus:ring-2 focus:ring-[rgba(214,179,106,0.12)]"
                     required
                   />
                 </label>
               </div>
 
               <label className="block">
-                <span className="text-sm text-zinc-600">首页头部简介</span>
+                <span className="text-sm text-[var(--muted)]">首页头部简介</span>
                 <textarea
                   value={form.heroIntro}
                   onChange={(event) => setForm({ ...form, heroIntro: event.target.value })}
-                  className="mt-2 w-full rounded-3xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-base outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                  className="mt-2 w-full rounded-3xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[rgba(214,179,106,0.38)] focus:ring-2 focus:ring-[rgba(214,179,106,0.12)]"
                   rows={4}
                   required
                 />
               </label>
 
               <label className="block">
-                <span className="text-sm text-zinc-600">个人介绍</span>
+                <span className="text-sm text-[var(--muted)]">个人介绍</span>
                 <textarea
                   value={form.bio}
                   onChange={(event) => setForm({ ...form, bio: event.target.value })}
-                  className="mt-2 w-full rounded-3xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-base outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                  className="mt-2 w-full rounded-3xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[rgba(214,179,106,0.38)] focus:ring-2 focus:ring-[rgba(214,179,106,0.12)]"
                   rows={6}
                   required
                 />
               </label>
 
               <label className="block">
-                <span className="text-sm text-zinc-600">头像链接</span>
+                <span className="text-sm text-[var(--muted)]">头像链接</span>
                 <input
                   value={form.avatar}
                   onChange={(event) => setForm({ ...form, avatar: event.target.value })}
-                  className="mt-2 w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-base outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                  className="mt-2 w-full rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[rgba(214,179,106,0.38)] focus:ring-2 focus:ring-[rgba(214,179,106,0.12)]"
                   placeholder="https://..."
                 />
               </label>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block">
-                  <span className="text-sm text-zinc-600">按钮文案</span>
+                  <span className="text-sm text-[var(--muted)]">按钮文案</span>
                   <input
                     value={form.ctaText}
                     onChange={(event) => setForm({ ...form, ctaText: event.target.value })}
-                    className="mt-2 w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-base outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                    className="mt-2 w-full rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[rgba(214,179,106,0.38)] focus:ring-2 focus:ring-[rgba(214,179,106,0.12)]"
                     required
                   />
                 </label>
                 <label className="block">
-                  <span className="text-sm text-zinc-600">按钮链接</span>
+                  <span className="text-sm text-[var(--muted)]">按钮链接</span>
                   <input
                     value={form.ctaLink}
                     onChange={(event) => setForm({ ...form, ctaLink: event.target.value })}
-                    className="mt-2 w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-base outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                    className="mt-2 w-full rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[rgba(214,179,106,0.38)] focus:ring-2 focus:ring-[rgba(214,179,106,0.12)]"
                     required
                   />
                 </label>
@@ -282,7 +282,7 @@ export default function ProfileEditor() {
               <button
                 type="submit"
                 disabled={saving}
-                className="inline-flex h-12 items-center justify-center rounded-2xl bg-sky-600 px-6 text-sm font-semibold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex h-12 items-center justify-center rounded-2xl bg-[var(--gold)] px-6 text-sm font-semibold text-black transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {saving ? "保存中..." : "保存关于我模块"}
               </button>
@@ -290,33 +290,33 @@ export default function ProfileEditor() {
           )}
         </form>
 
-        <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
+        <div className="premium-panel rounded-3xl p-6">
           <div className="mb-5 flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-semibold text-zinc-950">技能标签</h2>
-              <p className="mt-2 text-sm text-zinc-600">支持新增、删除和排序，前台会按这里的顺序展示。</p>
+              <h2 className="text-xl font-semibold text-[var(--foreground)]">技能标签</h2>
+              <p className="mt-2 text-sm text-[var(--muted)]">支持新增、删除和排序，前台会按这里的顺序展示。</p>
             </div>
             <button
               type="button"
               onClick={addSkill}
-              className="rounded-2xl border border-zinc-200 px-4 py-2 text-sm text-zinc-700 transition hover:bg-zinc-50"
+              className="rounded-2xl border border-[rgba(255,255,255,0.08)] px-4 py-2 text-sm text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)]"
             >
               新增标签
             </button>
           </div>
 
           {loading ? (
-            <p className="text-zinc-600">加载中...</p>
+            <p className="text-[var(--muted)]">加载中...</p>
           ) : (
             <div className="space-y-4">
               {form.skills.length > 0 ? (
                 form.skills.map((skill, index) => (
-                  <div key={skill.id} className="rounded-3xl border border-zinc-200 p-4">
+                  <div key={skill.id} className="rounded-3xl border border-[rgba(255,255,255,0.08)] p-4">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                       <input
                         value={skill.label}
                         onChange={(event) => updateSkill(index, event.target.value)}
-                        className="flex-1 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-base outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                        className="flex-1 rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-base text-[var(--foreground)] outline-none focus:border-[rgba(214,179,106,0.38)] focus:ring-2 focus:ring-[rgba(214,179,106,0.12)]"
                         placeholder="输入技能标签"
                       />
                       <div className="flex gap-2">
@@ -324,7 +324,7 @@ export default function ProfileEditor() {
                           type="button"
                           onClick={() => moveSkill(index, -1)}
                           disabled={index === 0}
-                          className="rounded-2xl border border-zinc-200 px-3 py-2 text-sm text-zinc-700 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+                          className="rounded-2xl border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)] disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           上移
                         </button>
@@ -332,14 +332,14 @@ export default function ProfileEditor() {
                           type="button"
                           onClick={() => moveSkill(index, 1)}
                           disabled={index === form.skills.length - 1}
-                          className="rounded-2xl border border-zinc-200 px-3 py-2 text-sm text-zinc-700 transition hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+                          className="rounded-2xl border border-[rgba(255,255,255,0.08)] px-3 py-2 text-sm text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)] disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           下移
                         </button>
                         <button
                           type="button"
                           onClick={() => removeSkill(index)}
-                          className="rounded-2xl border border-rose-200 px-3 py-2 text-sm text-rose-700 transition hover:bg-rose-50"
+                          className="rounded-2xl border border-[rgba(214,179,106,0.16)] px-3 py-2 text-sm text-[var(--gold)] transition hover:bg-[rgba(214,179,106,0.08)]"
                         >
                           删除
                         </button>
@@ -348,7 +348,7 @@ export default function ProfileEditor() {
                   </div>
                 ))
               ) : (
-                <div className="rounded-3xl border border-dashed border-zinc-200 p-6 text-sm text-zinc-500">
+                <div className="rounded-3xl border border-dashed border-[rgba(255,255,255,0.12)] p-6 text-sm text-[var(--muted)]">
                   还没有技能标签，点击“新增标签”开始配置。
                 </div>
               )}

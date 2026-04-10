@@ -16,8 +16,8 @@ type Props = {
 function StatusBadge({ status }: { status: PostItem["status"] }) {
   const styles =
     status === "PUBLISHED"
-      ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-      : "bg-amber-50 text-amber-700 border-amber-200";
+      ? "border-[rgba(214,179,106,0.22)] bg-[rgba(214,179,106,0.08)] text-[var(--gold)]"
+      : "border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] text-[var(--muted)]";
 
   return (
     <span className={`rounded-full border px-3 py-1 text-xs font-medium ${styles}`}>
@@ -36,29 +36,29 @@ export default function PostListPanel({
   onDelete,
 }: Props) {
   return (
-    <section className="overflow-hidden rounded-[32px] border border-zinc-200/70 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.06)]">
-      <div className="border-b border-zinc-200/80 px-6 py-5">
+    <section className="premium-panel overflow-hidden rounded-[32px]">
+      <div className="border-b border-[rgba(255,255,255,0.08)] px-6 py-5">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-sm uppercase tracking-[0.22em] text-zinc-500">Content Library</p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-950">
+            <p className="text-sm uppercase tracking-[0.22em] text-[var(--gold)]">Content Library</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--foreground)]">
               文章列表
             </h2>
-            <p className="mt-2 text-sm text-zinc-600">选择文章继续编辑，或快速切换到新建模式。</p>
+            <p className="mt-2 text-sm text-[var(--muted)]">选择文章继续编辑，或快速切换到新建模式。</p>
           </div>
           <button
             type="button"
             onClick={onCreateNew}
-            className="inline-flex h-11 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 px-4 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100"
+            className="inline-flex h-11 items-center justify-center rounded-2xl border border-[rgba(214,179,106,0.22)] bg-[rgba(214,179,106,0.08)] px-4 text-sm font-medium text-[var(--gold)] transition hover:brightness-110"
           >
-            新建文章
+            + 新建文章
           </button>
         </div>
       </div>
 
       <div className="max-h-[920px] space-y-4 overflow-y-auto px-5 py-5">
         {loading ? (
-          <div className="rounded-3xl border border-zinc-200 bg-zinc-50 p-6 text-sm text-zinc-600">
+          <div className="rounded-3xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] p-6 text-sm text-[var(--muted)]">
             正在加载文章列表...
           </div>
         ) : posts.length > 0 ? (
@@ -70,31 +70,31 @@ export default function PostListPanel({
                 key={post.id}
                 className={`rounded-[28px] border p-5 transition ${
                   isSelected
-                    ? "border-sky-200 bg-sky-50/60 shadow-[0_16px_40px_rgba(14,165,233,0.12)]"
-                    : "border-zinc-200 bg-white hover:border-zinc-300 hover:shadow-md"
+                    ? "border-[rgba(214,179,106,0.24)] bg-[rgba(214,179,106,0.08)] shadow-[0_16px_40px_rgba(0,0,0,0.32)]"
+                    : "border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] hover:border-[rgba(214,179,106,0.18)]"
                 }`}
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="space-y-3">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <StatusBadge status={post.status} />
-                      <span className="text-xs uppercase tracking-[0.18em] text-zinc-400">
-                        {post.category?.name ?? "未分类"}
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => onEdit(post)}
-                      className={`text-left text-lg font-semibold leading-7 tracking-tight ${
-                        isSelected ? "text-sky-900" : "text-zinc-950"
-                      }`}
-                    >
-                      {post.title}
-                    </button>
-                    <p className="line-clamp-2 text-sm leading-6 text-zinc-600">
-                      {post.excerpt ?? "这篇文章暂未设置摘要。"}
-                    </p>
+                <div className="space-y-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <StatusBadge status={post.status} />
+                    <span className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">
+                      {post.category?.name ?? "未分类"}
+                    </span>
                   </div>
+
+                  <button
+                    type="button"
+                    onClick={() => onEdit(post)}
+                    className={`text-left text-lg font-semibold leading-7 tracking-tight ${
+                      isSelected ? "text-[var(--gold)]" : "text-[var(--foreground)]"
+                    }`}
+                  >
+                    {post.title}
+                  </button>
+
+                  <p className="line-clamp-2 text-sm leading-6 text-[var(--muted)]">
+                    {post.excerpt ?? "这篇文章暂未设置摘要。"}
+                  </p>
                 </div>
 
                 <div className="mt-4 flex flex-wrap gap-2">
@@ -102,25 +102,25 @@ export default function PostListPanel({
                     post.tags.map((item) => (
                       <span
                         key={`${post.id}-${item.tag.name}`}
-                        className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs text-zinc-700"
+                        className="rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3 py-1 text-xs text-[var(--muted)]"
                       >
                         {item.tag.name}
                       </span>
                     ))
                   ) : (
-                    <span className="text-xs text-zinc-400">暂无标签</span>
+                    <span className="text-xs text-[var(--muted)]">暂无标签</span>
                   )}
                 </div>
 
-                <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-zinc-100 pt-4">
-                  <p className="text-xs uppercase tracking-[0.18em] text-zinc-400">
+                <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-[rgba(255,255,255,0.08)] pt-4">
+                  <p className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]">
                     更新于 {formatDisplayDate(post.updatedAt)}
                   </p>
                   <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={() => onEdit(post)}
-                      className="inline-flex h-10 items-center justify-center rounded-2xl border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50"
+                      className="inline-flex h-10 items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.24)] hover:text-[var(--gold)]"
                     >
                       编辑
                     </button>
@@ -128,7 +128,7 @@ export default function PostListPanel({
                       type="button"
                       onClick={() => onDelete(post.id)}
                       disabled={deletingId === post.id}
-                      className="inline-flex h-10 items-center justify-center rounded-2xl border border-rose-200 bg-rose-50 px-4 text-sm font-medium text-rose-700 transition hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="inline-flex h-10 items-center justify-center rounded-2xl border border-[rgba(214,179,106,0.16)] bg-[rgba(214,179,106,0.08)] px-4 text-sm font-medium text-[var(--gold)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {deletingId === post.id ? "删除中..." : "删除"}
                     </button>
@@ -138,7 +138,7 @@ export default function PostListPanel({
             );
           })
         ) : (
-          <div className="rounded-[28px] border border-dashed border-zinc-200 bg-zinc-50 p-8 text-sm text-zinc-500">
+          <div className="rounded-[28px] border border-dashed border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.02)] p-8 text-sm text-[var(--muted)]">
             还没有文章，点击“新建文章”开始创建第一篇内容。
           </div>
         )}

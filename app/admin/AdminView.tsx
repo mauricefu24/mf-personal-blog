@@ -12,6 +12,7 @@ export default function AdminView() {
   const [posts, setPosts] = useState<PostItem[]>([]);
   const [form, setForm] = useState<FormState>(initialForm);
   const [selectedPost, setSelectedPost] = useState<PostItem | null>(null);
+  const [editorVersion, setEditorVersion] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -42,6 +43,7 @@ export default function AdminView() {
 
   function fillForm(post: PostItem) {
     setSelectedPost(post);
+    setEditorVersion((current) => current + 1);
     setForm({
       title: post.title,
       slug: post.slug,
@@ -59,6 +61,7 @@ export default function AdminView() {
 
   function resetForm() {
     setSelectedPost(null);
+    setEditorVersion((current) => current + 1);
     setForm(initialForm);
     setError(null);
   }
@@ -141,7 +144,7 @@ export default function AdminView() {
       />
 
       {error ? (
-        <div className="rounded-[24px] border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-700 shadow-sm">
+        <div className="rounded-[24px] border border-[rgba(214,179,106,0.18)] bg-[rgba(214,179,106,0.08)] px-5 py-4 text-sm text-[var(--gold)] shadow-sm">
           {error}
         </div>
       ) : null}
@@ -159,9 +162,11 @@ export default function AdminView() {
 
         <PostEditorWorkspace
           form={form}
+          editorInstanceKey={`${selectedPost?.id ?? "new"}-${editorVersion}`}
           mode={selectedPost ? "edit" : "create"}
           saving={saving}
           onChange={updateForm}
+          onCreateNew={resetForm}
           onSubmit={(event) => void handleSubmit(event)}
         />
       </section>

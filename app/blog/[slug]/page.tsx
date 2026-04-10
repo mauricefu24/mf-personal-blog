@@ -19,32 +19,48 @@ export default async function BlogPostPage(props: PageProps<"/blog/[slug]">) {
   }
 
   return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,_#f8fafc_0%,_#ffffff_30%,_#f8fafc_100%)]">
-      <div className="mx-auto flex max-w-5xl flex-col gap-8 px-6 py-10 sm:py-14">
-        <Link href="/" className="text-sm font-medium text-sky-700 hover:underline">
-          ← 返回模块首页
-        </Link>
+    <main className="min-h-screen premium-shell">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Link
+            href="/blog"
+            className="inline-flex items-center rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] px-4 py-2 text-sm font-medium text-[var(--muted)] transition hover:border-[rgba(214,179,106,0.2)] hover:text-[var(--foreground)]"
+          >
+            返回博客首页
+          </Link>
+          <Link
+            href="/"
+            className="inline-flex items-center rounded-full border border-[rgba(214,179,106,0.2)] bg-[rgba(214,179,106,0.08)] px-4 py-2 text-sm font-medium text-[var(--gold)] transition hover:border-[rgba(214,179,106,0.34)]"
+          >
+            返回模块首页
+          </Link>
+        </div>
 
-        <article className="overflow-hidden rounded-[32px] border border-zinc-200/80 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
-          <header className="border-b border-zinc-200/80 px-8 py-8 sm:px-12 sm:py-10">
-            <div className="flex flex-wrap items-center gap-3 text-sm text-zinc-500">
-              <span>发布于 {formatDisplayDate(post.updatedAt)}</span>
-              <span className="text-zinc-300">/</span>
-              <span className="rounded-full bg-sky-50 px-3 py-1 font-medium text-sky-700">
+        <article className="premium-panel overflow-hidden rounded-[36px]">
+          <header className="border-b border-[rgba(255,255,255,0.08)] px-7 py-8 sm:px-10 sm:py-10 lg:px-12 lg:py-12">
+            <div className="flex flex-wrap items-center gap-3 text-sm text-[var(--muted)]">
+              <span>{formatDisplayDate(post.updatedAt)}</span>
+              <span className="text-[rgba(255,255,255,0.16)]">/</span>
+              <span className="rounded-full border border-[rgba(214,179,106,0.2)] bg-[rgba(214,179,106,0.08)] px-3 py-1 font-medium text-[var(--gold)]">
                 {post.category?.name ?? "未分类"}
               </span>
             </div>
 
-            <h1 className="mt-6 max-w-4xl text-4xl font-semibold tracking-tight text-zinc-950 sm:text-6xl">
+            <h1 className="mt-6 max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-[var(--foreground)] sm:text-5xl lg:text-6xl">
               {post.title}
             </h1>
-            <p className="mt-5 max-w-3xl text-lg leading-8 text-zinc-600">{post.excerpt}</p>
+
+            {post.excerpt ? (
+              <p className="mt-5 max-w-3xl text-lg leading-8 text-[rgba(245,245,242,0.7)]">
+                {post.excerpt}
+              </p>
+            ) : null}
 
             <div className="mt-6 flex flex-wrap gap-2">
               {post.tags.map((item: { tag: { name: string } }) => (
                 <span
                   key={item.tag.name}
-                  className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-sm text-zinc-700"
+                  className="rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3 py-1 text-sm text-[var(--muted)]"
                 >
                   {item.tag.name}
                 </span>
@@ -52,29 +68,29 @@ export default async function BlogPostPage(props: PageProps<"/blog/[slug]">) {
             </div>
 
             {post.coverImage ? (
-              <div className="mt-8 overflow-hidden rounded-[28px] border border-zinc-200 bg-zinc-100">
+              <div className="mt-8 overflow-hidden rounded-[30px] border border-[rgba(214,179,106,0.12)] bg-black/20">
                 <img
                   src={post.coverImage}
                   alt={post.title}
-                  className="h-72 w-full object-cover sm:h-96"
+                  className="h-72 w-full object-cover opacity-95 sm:h-[28rem]"
                 />
               </div>
             ) : null}
           </header>
 
-          <div className="px-8 py-8 sm:px-12 sm:py-10">
+          <div className="px-7 py-8 sm:px-10 sm:py-10 lg:px-12 lg:py-12">
             <ArticleContent content={post.content} />
 
-            <div className="mx-auto mt-12 flex max-w-3xl justify-between gap-4 border-t border-zinc-200 pt-6">
+            <div className="mx-auto mt-14 flex max-w-3xl flex-wrap justify-between gap-4 border-t border-[rgba(255,255,255,0.08)] pt-6">
               <Link
                 href="/blog"
-                className="inline-flex items-center rounded-2xl border border-zinc-200 bg-white px-5 py-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50"
+                className="inline-flex items-center rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.02)] px-5 py-3 text-sm font-medium text-[var(--foreground)] transition hover:border-[rgba(214,179,106,0.22)] hover:text-[var(--gold)]"
               >
-                返回博客首页
+                浏览更多文章
               </Link>
               <Link
                 href="/"
-                className="inline-flex items-center rounded-2xl bg-sky-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-sky-700"
+                className="inline-flex items-center rounded-full bg-[var(--gold)] px-5 py-3 text-sm font-medium text-black transition hover:brightness-105"
               >
                 返回模块首页
               </Link>

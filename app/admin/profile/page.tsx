@@ -12,7 +12,7 @@ export default async function AdminProfilePage() {
   }
 
   return (
-    <main className="mx-auto min-h-screen max-w-6xl px-6 py-10">
+    <main className="premium-shell mx-auto min-h-screen max-w-6xl px-6 py-10">
       <ProfileEditor />
     </main>
   );
